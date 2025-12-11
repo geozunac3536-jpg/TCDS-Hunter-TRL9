@@ -1,20 +1,19 @@
 """
 sigma_metrics.py
 
-Cálculo de Σ-metrics para TCDS Hunter/Crawler en versión σ-céntrica:
+Cálculo de Σ-metrics para TCDS Hunter/Crawler en versión σ-céntrica.
 
-- LI  → Locking Index (firma directa del Sincronón en la ventana).
-- R   → correlación de Pearson entre señal y patrón de locking.
-- RMSE_SL → error cuadrático medio entre señal y componente de locking.
-- κΣ  → curvatura coherencial (dinámica de LI en el tiempo).
+Idea central:
+    - El Sincronón (σ) se observa operacionalmente como intensidad de locking.
+    - Esa intensidad se codifica en LI (Locking Index).
 
-Aquí adoptamos explícitamente:
+Aquí proveemos:
 
-    Q ≡ σ_intensidad ≡ LI
+- SigmaMetrics: dataclass con LI, R, RMSE_SL, κΣ.
+- compute_LI: calcula LI en una ventana.
+- compute_sigma_metrics: calcula todas las Σ-metrics clave.
 
-Es decir: LI no es solo “una métrica más”; es la forma observable mínima
-del Sincronón en cada ventana. El resto de métricas ayudan a validar
-si esa LI es robusta, significativa y consistente con ΔH.
+Este módulo es isomórfico: no depende de sismos; sólo de arrays numéricos.
 """
 
 from __future__ import annotations
@@ -37,11 +36,11 @@ class SigmaMetrics:
     R : float
         Correlación de Pearson entre señal y patrón de locking.
     RMSE_SL : float
-        Root Mean Squared Error entre señal normalizada y locking normalizado.
+        Error cuadrático medio entre señal y locking estandarizados.
     kappa_sigma : Optional[float]
-        Curvatura coherencial κΣ, derivada de la serie temporal LI(t).
-    extra : Dict[str, Any]
-        Campo para adjuntar detalles (LI_series, tiempos, etc.).
+        Curvatura coherencial κΣ estimada a partir de LI(t).
+    extra : Dict[str, Any] | None
+        Campo libre para detalles adicionales (serie LI, tiempos, etc.).
     """
     LI: float
     R: float
@@ -55,7 +54,7 @@ def _normalize(x: np.ndarray, eps: float = 1e-12) -> np.ndarray:
     Normaliza un array restando la media y dividiendo por la desviación estándar.
 
     Si la desviación es casi cero, retorna un array de ceros para evitar
-    divisiones numéricamente inestables.
+    inestabilidades numéricas.
     """
     x = np.asarray(x, dtype=float)
     x = x[np.isfinite(x)]
@@ -109,33 +108,30 @@ def _rmse(x: np.ndarray, y: np.ndarray) -> float:
 def compute_LI(
     signal: np.ndarray,
     locking_pattern: np.ndarray,
-    eps: float = 1e-12
+    eps: float = 1e-12,
 ) -> float:
     """
     Calcula el Locking Index (LI) en una ventana.
 
     Definición operativa:
-
-        LI = |r|
-
+        LI = |r|,
     donde r es la correlación de Pearson entre:
 
         - señal normalizada, y
         - patrón de locking normalizado.
 
     Interpretación σ-céntrica:
-
-    - LI ≈ 0   → σ prácticamente ausente (domina φ).
-    - LI ≈ 1   → σ domina el comportamiento de la señal (locking máximo).
+        - LI ≈ 0  → σ prácticamente ausente (domina φ).
+        - LI ≈ 1  → σ domina la forma de la señal.
 
     Parameters
     ----------
     signal : np.ndarray
         Señal de la ventana.
     locking_pattern : np.ndarray
-        Patrón de locking Σ (envolvente, plantilla, modo, etc.).
+        Patrón de locking Σ (envolvente, modo, plantilla, etc.).
     eps : float, optional
-        Término de regularización numérica.
+        Regularización numérica.
 
     Returns
     -------
@@ -149,39 +145,32 @@ def compute_LI(
 
 def estimate_kappa_sigma(
     li_series: np.ndarray,
-    times: Optional[np.ndarray] = None
+    times: Optional[np.ndarray] = None,
 ) -> float:
     """
     Estima la curvatura coherencial κΣ a partir de LI(t).
 
     Aproximación mínima reproducible:
-
-    - Se toma la segunda derivada discreta de LI(t).
-    - κΣ = max |d²LI/dt²| en la ventana.
-
-    Interpretación:
-
-    - κΣ alto indica cambios rápidos en la intensidad de σ (nucleación, transición).
-    - κΣ bajo indica régimen estacionario.
+        κΣ = max |d²LI/dt²| (segunda derivada discreta simple).
 
     Parameters
     ----------
     li_series : np.ndarray
-        Serie temporal LI(t), tamaño >= 3 recomendado.
+        Serie LI(t) con longitud >= 3 recomendada.
     times : np.ndarray, optional
-        Tiempos asociados a LI(t) (no se usan aún, pero se conserva el parámetro).
+        Tiempos asociados a LI(t). Reservado para futuras extensiones.
 
     Returns
     -------
     float
-        κΣ estimada. Si la serie es muy corta, retorna 0.0.
+        κΣ estimada. Retorna 0.0 si la serie es muy corta.
     """
     li_series = np.asarray(li_series, dtype=float)
     n = li_series.size
     if n < 3:
         return 0.0
 
-    d2 = li_series[:-2] - 2 * li_series[1:-1] + li_series[2:]
+    d2 = li_series[:-2] - 2.0 * li_series[1:-1] + li_series[2:]
     kappa = float(np.max(np.abs(d2)))
     return kappa
 
@@ -191,10 +180,10 @@ def compute_sigma_metrics(
     locking_pattern: np.ndarray,
     *,
     li_series: Optional[np.ndarray] = None,
-    li_times: Optional[np.ndarray] = None
+    li_times: Optional[np.ndarray] = None,
 ) -> SigmaMetrics:
     """
-    Calcula Σ-metrics en una ventana de señal.
+    Calcula Σ-metrics para una ventana de señal y un patrón de locking.
 
     Parameters
     ----------
@@ -203,30 +192,25 @@ def compute_sigma_metrics(
     locking_pattern : np.ndarray
         Patrón de locking Σ (misma resolución temporal que `signal`).
     li_series : np.ndarray, optional
-        Serie LI(t) de subventanas internas (si ya está calculada).
+        Serie LI(t) de subventanas internas, si ya está disponible.
     li_times : np.ndarray, optional
         Tiempos asociados a li_series.
 
     Returns
     -------
     SigmaMetrics
-        LI, R, RMSE_SL, κΣ (si disponible) y extras.
+        Objeto con LI, R, RMSE_SL, κΣ (si disponible) y detalles extra.
     """
     signal = np.asarray(signal, dtype=float)
     locking_pattern = np.asarray(locking_pattern, dtype=float)
 
-    # R: correlación de Pearson
     R = _corr_pearson(signal, locking_pattern)
-
-    # LI: módulo de R → intensidad observable de σ
     LI = float(abs(R))
 
-    # RMSE_SL: error entre señal y locking, ambos estandarizados
     signal_norm = _normalize(signal)
     locking_norm = _normalize(locking_pattern)
     RMSE_SL = _rmse(signal_norm, locking_norm)
 
-    # κΣ: dinámica de LI(t)
     kappa_sigma = None
     extra: Dict[str, Any] = {}
 
@@ -241,6 +225,5 @@ def compute_sigma_metrics(
         R=float(R),
         RMSE_SL=float(RMSE_SL),
         kappa_sigma=None if kappa_sigma is None else float(kappa_sigma),
-        extra=extra if extra else None,
+        extra=extra or None,
     )
-
