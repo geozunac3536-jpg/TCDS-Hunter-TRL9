@@ -1,0 +1,128 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "dct": "http://purl.org/dc/terms/",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "tcds": "https://geozunac3536-jpg.github.io/TCDS-/ontology#"
+  },
+  "@type": [
+    "schema:SoftwareSourceCode",
+    "schema:Dataset"
+  ],
+  "@id": "https://doi.org/10.5281/zenodo.17885562",
+  "schema:name": "TCDS Hunter/Crawler — TRL-9 Evidence Package",
+  "schema:alternateName": "Paquete de Evidencia TRL-9 TCDS (Hunter, Crawler, LBCU, Σ-metrics)",
+  "schema:description": "Paquete técnico de evidencia TRL-9 del sistema predictivo TCDS: scripts Hunter/Crawler, implementación LBCU, dataset de eventos (events_feed.jsonl), sincronogramas y reporte técnico con Σ-metrics y colapso entrópico (ΔH < -0.20).",
+  "schema:version": "1.0.0",
+  "schema:license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "schema:creator": {
+    "@type": "schema:Person",
+    "schema:name": "Genaro Carrasco Ozuna",
+    "schema:identifier": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:propertyID": "ORCID",
+        "schema:value": "0009-0005-6358-9910"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:propertyID": "OSH-ID",
+        "schema:value": "OSH-8541-2025"
+      }
+    ],
+    "schema:email": "mailto:geozunac3536@gmail.com",
+    "schema:url": "https://geozunac3536-jpg.github.io/TCDS-/"
+  },
+  "schema:publisher": {
+    "@type": "schema:Organization",
+    "schema:name": "Proyecto TCDS / Motor Sincrónico de Luz (MSL)"
+  },
+  "schema:identifier": [
+    {
+      "@type": "schema:PropertyValue",
+      "schema:propertyID": "DOI",
+      "schema:value": "10.5281/zenodo.17885562"
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "schema:propertyID": "OSH-ID",
+      "schema:value": "OSH-8541-2025"
+    }
+  ],
+  "schema:url": "https://doi.org/10.5281/zenodo.17885562",
+  "schema:codeRepository": "https://github.com/geozunac3536-jpg/TCDS-Hunter-TRL9",
+  "schema:programmingLanguage": "Python",
+  "schema:keywords": [
+    "TCDS",
+    "Teoría Cromodinámica Sincrónica",
+    "Hunter",
+    "Crawler",
+    "LBCU",
+    "Σ-metrics",
+    "ΔH",
+    "Entropy Collapse",
+    "TRL-9",
+    "Predictive Seismology",
+    "Causal Coherence"
+  ],
+  "schema:isAccessibleForFree": true,
+  "schema:conditionsOfAccess": "Solo para uso académico y no comercial bajo CC BY-NC-SA 4.0. El uso comercial requiere licencia TCDS-Professional y registro en el TCDS Usage Registry.",
+  "dct:conformsTo": [
+    {
+      "@type": "dct:Standard",
+      "schema:name": "TCDS Σ-metrics and E-Veto Standard",
+      "schema:description": "LI ≥ 0.90, R > 0.95, RMSE_SL < 0.10, reproducibilidad ≥ 95%, ΔH ≤ -0.20."
+    }
+  ],
+  "dcat:distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "schema:name": "Código fuente (Hunter/Crawler, LBCU)",
+      "schema:encodingFormat": "application/zip",
+      "schema:contentUrl": "https://doi.org/10.5281/zenodo.17885562"
+    },
+    {
+      "@type": "dcat:Distribution",
+      "schema:name": "Dataset de eventos (events_feed.jsonl)",
+      "schema:encodingFormat": "application/jsonl",
+      "schema:contentUrl": "https://doi.org/10.5281/zenodo.17885562"
+    },
+    {
+      "@type": "dcat:Distribution",
+      "schema:name": "Reporte técnico LaTeX/PDF TRL-9",
+      "schema:encodingFormat": "application/pdf",
+      "schema:contentUrl": "https://doi.org/10.5281/zenodo.17885562"
+    }
+  ],
+  "tcds:entropyKPI": {
+    "@type": "schema:PropertyValue",
+    "schema:name": "TCDS E-Veto",
+    "schema:description": "Criterio de validez anti-apofenia: ΔH ≤ -0.20 en ventanas de coherencia Σ.",
+    "schema:value": "ΔH ≤ -0.20"
+  },
+  "tcds:sigmaMetrics": {
+    "@type": "schema:PropertyValue",
+    "schema:name": "Σ-metrics",
+    "schema:description": "Conjunto de métricas de coherencia: LI, R(t), RMSE_SL, κΣ, ventanas p:q.",
+    "schema:value": "LI ≥ 0.90; R > 0.95; RMSE_SL < 0.10; reproducibilidad ≥ 95%."
+  },
+  "tcds:usageRegistry": {
+    "@type": "schema:DataFeed",
+    "schema:name": "TCDS Usage Registry — Hunter/Crawler TRL-9",
+    "schema:description": "Registro público recomendado para usuarios que ejecuten el sistema TCDS (Hunter/Crawler) indicando propósito de uso, institución y fecha de primera ejecución.",
+    "schema:url": "https://geozunac3536-jpg.github.io/TCDS-/usage-registry",
+    "schema:dataset": {
+      "@type": "schema:Dataset",
+      "schema:name": "TCDS Usage Log (Declarative)",
+      "schema:description": "Log declarativo de instituciones y usuarios que reportan uso del sistema TCDS Hunter/Crawler.",
+      "schema:license": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  },
+  "prov:wasGeneratedBy": {
+    "@type": "prov:Activity",
+    "schema:name": "TCDS TRL-9 Field Operation",
+    "schema:description": "Operaciones en tiempo real del sistema Hunter/Crawler con detección de anomalías Σ y colapso entrópico en diciembre de 2025.",
+    "prov:endedAtTime": "2025-12-09T23:59:59Z"
+  }
+}
