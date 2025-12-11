@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TCDS Usage Registry — Hunter/Crawler TRL-9",
+  "description": "Esquema para entradas del registro declarativo de uso del sistema TCDS Hunter/Crawler TRL-9.",
+  "type": "object",
+  "properties": {
+    "institution_name": {
+      "type": "string",
+      "description": "Nombre de la institución, empresa o grupo de investigación."
+    },
+    "country": {
+      "type": "string",
+      "description": "País principal de operación."
+    },
+    "contact_person": {
+      "type": "string",
+      "description": "Nombre de la persona de contacto técnica."
+    },
+    "contact_email": {
+      "type": "string",
+      "format": "email",
+      "description": "Correo electrónico de contacto."
+    },
+    "purpose_of_use": {
+      "type": "string",
+      "description": "Descripción breve del propósito (investigación, pruebas internas, etc.)."
+    },
+    "first_run_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Fecha de la primera ejecución del sistema."
+    },
+    "commercial_intent": {
+      "type": "boolean",
+      "description": "Indica si existe intención comercial (true) o sólo académica (false)."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notas adicionales relevantes."
+    }
+  },
+  "required": [
+    "institution_name",
+    "country",
+    "contact_person",
+    "contact_email",
+    "purpose_of_use",
+    "first_run_date",
+    "commercial_intent"
+  ],
+  "additionalProperties": true
+}
