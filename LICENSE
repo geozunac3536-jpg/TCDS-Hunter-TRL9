@@ -1,0 +1,78 @@
+TCDS Hunter/Crawler — TRL-9 Evidence Package
+Copyright (c) 2025
+Genaro Carrasco Ozuna
+ORCID: 0009-0005-6358-9910
+Email: geozunac3536@gmail.com
+
+Este repositorio forma parte del proyecto:
+"Teoría Cromodinámica Sincrónica (TCDS) / Motor Sincrónico de Luz (MSL)"
+
+-------------------------------------------------------------------------------
+Licencia principal (uso académico y no comercial)
+-------------------------------------------------------------------------------
+
+Salvo indicación explícita en archivos individuales, el contenido de este
+repositorio (código, datos y documentación) se publica bajo:
+
+  Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+  (CC BY-NC-SA 4.0)
+
+Resumen (no sustituto de la licencia completa):
+
+- Puedes usar, copiar y adaptar el contenido para fines académicos,
+  de investigación, personales o no comerciales, siempre y cuando:
+  - des el crédito explícito a:
+    "Genaro Carrasco Ozuna — Proyecto TCDS"
+  - mantengas la misma licencia (BY-NC-SA) en trabajos derivados.
+- NO puedes utilizar este software, sus datos o derivados para
+  fines comerciales, explotación industrial o servicios de pago
+  sin un acuerdo de licencia específico con el autor.
+
+Texto completo de la licencia:
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
+-------------------------------------------------------------------------------
+Licenciamiento profesional / uso comercial
+-------------------------------------------------------------------------------
+
+Cualquier uso en:
+
+- infraestructuras críticas;
+- servicios de predicción, alerta temprana o modelado de riesgo
+  con fines de lucro;
+- integración en productos, plataformas o APIs comerciales;
+
+requiere una licencia comercial separada (**TCDS-Professional License**)
+negociada directamente con el autor.
+
+Contacto para licencias profesionales:
+
+  - Email:  geozunac3536@gmail.com
+  - WhatsApp técnico: +52 812 598 9868
+
+-------------------------------------------------------------------------------
+Ausencia de garantías
+-------------------------------------------------------------------------------
+
+Este software y los datos asociados se proporcionan "tal cual",
+sin garantía explícita ni implícita de:
+
+- exactitud,
+- completitud,
+- idoneidad para un propósito específico.
+
+El autor no se hace responsable de daños directos o indirectos
+derivados del uso de este paquete, incluyendo decisiones basadas
+en sus resultados en contextos operativos o de emergencia.
+
+-------------------------------------------------------------------------------
+Trazabilidad y ética
+-------------------------------------------------------------------------------
+
+Se recomienda firmemente:
+
+- registrar el uso institucional en el "TCDS Usage Registry — Hunter/Crawler",
+- mantener logs y auditorías claros,
+- y citar de forma adecuada el DOI asociado:
+
+  10.5281/zenodo.17885562
