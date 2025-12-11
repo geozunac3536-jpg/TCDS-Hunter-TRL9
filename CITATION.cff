@@ -1,0 +1,42 @@
+---
+
+## 2️⃣ `CITATION.cff`
+
+```yaml
+cff-version: 1.2.0
+message: "Si usas este software o sus resultados en tu trabajo, por favor cita este paquete."
+title: "TCDS Hunter/Crawler — TRL-9 Evidence Package"
+version: "1.0.0"
+date-released: "2025-12-10"
+doi: "10.5281/zenodo.17885562"
+authors:
+  - family-names: "Carrasco Ozuna"
+    given-names: "Genaro"
+    orcid: "https://orcid.org/0009-0005-6358-9910"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.17885562"
+keywords:
+  - "TCDS"
+  - "Teoría Cromodinámica Sincrónica"
+  - "Hunter"
+  - "Crawler"
+  - "LBCU"
+  - "Σ-metrics"
+  - "ΔH"
+  - "Entropy Collapse"
+  - "TRL-9"
+  - "Predictive Seismology"
+  - "Causal Coherence"
+license: "CC-BY-NC-SA-4.0"
+repository-code: "https://github.com/geozunac3536-jpg/TCDS-Hunter-TRL9"
+url: "https://doi.org/10.5281/zenodo.17885562"
+type: software
+preferred-citation:
+  type: article
+  title: "TCDS Hunter/Crawler — TRL-9 Evidence Package (Seismic Causal Coherence Engine)"
+  authors:
+    - family-names: "Carrasco Ozuna"
+      given-names: "Genaro"
+  year: 2025
+  doi: "10.5281/zenodo.17885562"
