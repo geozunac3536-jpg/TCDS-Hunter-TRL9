@@ -1,0 +1,34 @@
+{
+  "title": "TCDS Hunter/Crawler — TRL-9 Evidence Package",
+  "upload_type": "software",
+  "description": "Paquete técnico de evidencia TRL-9 del sistema predictivo TCDS (Hunter/Crawler): implementación de la Ley de Balance Coherencial Universal (LBCU), cálculo de Σ-metrics (LI, R(t), RMSE_SL, κΣ) y colapso entrópico (ΔH ≤ -0.20) aplicado a sismología real. Incluye scripts de campo, dataset de eventos (events_feed.jsonl), sincronogramas y reporte técnico auditable.",
+  "creators": [
+    {
+      "name": "Carrasco Ozuna, Genaro",
+      "affiliation": "Proyecto TCDS / Motor Sincrónico de Luz (MSL), México",
+      "orcid": "0009-0005-6358-9910"
+    }
+  ],
+  "access_right": "open",
+  "license": "cc-by-nc-sa-4.0",
+  "keywords": [
+    "TCDS",
+    "Teoría Cromodinámica Sincrónica",
+    "Hunter",
+    "Crawler",
+    "LBCU",
+    "Σ-metrics",
+    "ΔH",
+    "Entropy Collapse",
+    "TRL-9",
+    "Predictive Seismology",
+    "Causal Coherence"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://geozunac3536-jpg.github.io/TCDS-/",
+      "relation": "isSupplementedBy",
+      "resource_type": "publication-software"
+    }
+  ]
+}
