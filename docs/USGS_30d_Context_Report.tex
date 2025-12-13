@@ -1,0 +1,94 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\geometry{margin=2.5cm}
+
+\title{\textbf{USGS 30-Day Seismic Baseline}\\
+Contextual Reference for TCDS Hunter TRL-9}
+\author{Genaro Carrasco Ozuna\\
+Proyecto TCDS}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose of This Document}
+This document provides a formal, auditable description of the \textbf{USGS 30-day seismic dataset}
+used by the \textbf{TCDS Hunter System} exclusively as a \textit{statistical baseline} for
+Zoom-Out analysis.
+
+The dataset is \textbf{not modified, reinterpreted, or redistributed as primary data}.
+It is consumed as a reference layer to compute deviations (Z-score) and coherence metrics.
+
+\section*{Data Source}
+\begin{itemize}
+  \item Provider: United States Geological Survey (USGS)
+  \item Product: Earthquake Catalog – Past 30 Days
+  \item Endpoint:
+  \begin{verbatim}
+https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojson
+  \end{verbatim}
+  \item Retrieval Mode: Automated (read-only)
+\end{itemize}
+
+\section*{Role Within TCDS Architecture}
+Within the TCDS paradigm, this dataset plays a \textbf{passive, $\phi$-driven role}:
+
+\begin{itemize}
+  \item It defines the \textbf{historical expectation} ($\mu$) of regional seismicity.
+  \item It enables computation of:
+  \[
+  Z = \frac{N_{\text{current}} - \mu}{\sigma}
+  \]
+  \item It does \textbf{not} trigger alerts by itself.
+\end{itemize}
+
+Active detection is performed exclusively by:
+\begin{itemize}
+  \item Entropy collapse ($\Delta H$)
+  \item Locking Index (LI)
+  \item Causal Time ($t_C$)
+  \item E-Veto validation
+\end{itemize}
+
+\section*{Separation of Responsibility}
+\begin{itemize}
+  \item USGS data: \textbf{Observational, external, authoritative}
+  \item TCDS Hunter output: \textbf{Derived, causal, internal}
+\end{itemize}
+
+This separation guarantees:
+\begin{itemize}
+  \item No claim of ownership over USGS data
+  \item No alteration of original records
+  \item Full legal and scientific compliance
+\end{itemize}
+
+\section*{Reproducibility and Traceability}
+Each ingestion includes:
+\begin{itemize}
+  \item Retrieval timestamp (UTC)
+  \item SHA-256 hash of the raw GeoJSON file
+  \item Configuration hash of the Hunter/Crawler run
+\end{itemize}
+
+These elements ensure deterministic replay and forensic auditability.
+
+\section*{Licensing Note}
+USGS datasets are used under their public data policy.
+This document and all TCDS-derived analyses are licensed independently and
+do not impose restrictions on the original USGS material.
+
+\section*{Conclusion}
+The USGS 30-day dataset functions strictly as a \textbf{contextual baseline}.
+All predictive, causal, and operational claims originate solely from
+the TCDS Hunter system.
+
+\end{document}
