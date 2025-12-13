@@ -3,494 +3,627 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#05060a" />
-  <title>TCDS Hunter — Landing Operativa (Zenodo DOI 10.5281/zenodo.17923458)</title>
+  <meta name="theme-color" content="#06060a" />
+
+  <title>TCDS Hunter TRL-9 — Reloj Causal | Nodo Vivo</title>
+  <meta name="description" content="Nodo vivo TRL-9 del sistema TCDS Hunter: Soldier + Crawler + evidencias, baseline USGS y reloj causal animado. Separación explícita de DOIs canónico vs observacional." />
 
   <!-- OpenGraph -->
-  <meta property="og:title" content="TCDS Hunter — Demostración Operativa (TRL-9) — Zenodo 10.5281/zenodo.17923458" />
+  <meta property="og:title" content="TCDS Hunter TRL-9 — Reloj Causal | Nodo Vivo" />
+  <meta property="og:description" content="Sistema Hunter TRL-9: monitoreo, evidencia, baseline USGS y reloj causal animado. DOIs: 17520491 canónico, 17923458 nodo vivo." />
   <meta property="og:type" content="website" />
-  <meta property="og:description" content="Landing operativa y dossier técnico: artefactos, scripts, radar HD y licenciamiento. Fuente canónica: Zenodo DOI 10.5281/zenodo.17923458" />
 
   <style>
     :root{
       --bg:#05060a;
-      --panel:#0b0d14;
-      --panel2:#0f1322;
-      --txt:#e9ecff;
-      --muted:#aab1d6;
-      --line:#20264a;
+      --bg2:#070816;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.09);
+      --txt:#e9eefb;
+      --mut:#aab4d6;
+      --line:rgba(255,255,255,0.12);
 
-      --neon1:#79ffe1;
-      --neon2:#b48cff;
-      --warn:#ffd479;
-      --bad:#ff5a79;
+      --cyan:#00F3FF;
+      --mag:#FF00FF;
+      --green:#39FF14;
+      --yellow:#FFE600;
+      --red:#ff355d;
 
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --radius: 20px;
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --radius: 22px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family:var(--sans);
-      background: radial-gradient(1200px 700px at 20% 10%, rgba(180,140,255,.18), transparent 60%),
-                  radial-gradient(900px 600px at 85% 15%, rgba(121,255,225,.14), transparent 55%),
-                  radial-gradient(900px 900px at 50% 95%, rgba(255,212,121,.10), transparent 60%),
-                  var(--bg);
       color:var(--txt);
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(0,243,255,0.12), transparent 55%),
+        radial-gradient(900px 600px at 85% 25%, rgba(255,0,255,0.10), transparent 55%),
+        radial-gradient(900px 600px at 60% 90%, rgba(57,255,20,0.09), transparent 55%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
     }
 
-    a{color:var(--neon1); text-decoration:none}
-    a:hover{opacity:.9; text-decoration:underline}
-    .wrap{max-width:1100px; margin:0 auto; padding:28px 18px 60px}
+    .wrap{max-width:1180px;margin:0 auto;padding:28px 18px 64px}
     .topbar{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding:16px 18px; border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(15,19,34,.9), rgba(11,13,20,.92));
-      border-radius: var(--radius);
+      display:flex;gap:14px;align-items:center;justify-content:space-between;
+      padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,0.25);
+      backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
     }
-
-    .brand{
-      display:flex; align-items:center; gap:14px;
-      min-width: 260px;
+    .brand{display:flex;align-items:center;gap:12px;min-width:260px}
+    .mark{
+      width:42px;height:42px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(0,243,255,0.9), rgba(255,0,255,0.8));
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 0 30px rgba(0,243,255,0.20);
+      position:relative;overflow:hidden;
     }
-
-    .logo{
-      width:46px; height:46px; border-radius:14px;
-      background: linear-gradient(135deg, rgba(121,255,225,.35), rgba(180,140,255,.25));
-      border:1px solid rgba(121,255,225,.25);
-      display:grid; place-items:center;
-      box-shadow: 0 0 0 1px rgba(180,140,255,.08), 0 18px 40px rgba(0,0,0,.35);
-      overflow:hidden;
+    .mark:before{
+      content:"";position:absolute;inset:-30%;
+      background: conic-gradient(from 180deg, rgba(0,243,255,0.0), rgba(0,243,255,0.7), rgba(255,0,255,0.7), rgba(0,243,255,0.0));
+      animation: spin 4.2s linear infinite;
+      filter: blur(0.4px);
     }
-    .logo img{width:44px; height:44px; opacity:.95}
-
-    .title{display:flex; flex-direction:column; gap:2px}
-    .title h1{font-size:16px; margin:0; letter-spacing:.3px}
-    .title .sub{font-size:12px; color:var(--muted)}
-
-    .pillrow{display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end}
+    .brand h1{font-size:14px;line-height:1.15;margin:0}
+    .brand p{margin:2px 0 0;font-size:12px;color:var(--mut)}
+    .nav{
+      display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end
+    }
     .pill{
-      font-family:var(--mono);
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(5,6,10,.35);
-      color: var(--muted);
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;border:1px solid var(--line);
+      color:var(--txt);text-decoration:none;font-size:12px;
+      background: rgba(255,255,255,0.05);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
     }
-    .pill strong{color:var(--txt); font-weight:600}
-    .pill.neon{
-      border-color: rgba(121,255,225,.35);
-      color: var(--txt);
-      box-shadow: 0 0 0 1px rgba(121,255,225,.08);
+    .pill:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.18);
     }
+    .pill .dot{width:8px;height:8px;border-radius:50%}
+    .dot.cyan{background:var(--cyan);box-shadow:0 0 14px rgba(0,243,255,0.5)}
+    .dot.mag{background:var(--mag);box-shadow:0 0 14px rgba(255,0,255,0.45)}
+    .dot.green{background:var(--green);box-shadow:0 0 14px rgba(57,255,20,0.45)}
+    .dot.yel{background:var(--yellow);box-shadow:0 0 14px rgba(255,230,0,0.35)}
 
     .hero{
       margin-top:18px;
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:16px;
+      display:grid;grid-template-columns: 1.1fr 0.9fr;gap:18px;
       align-items:stretch;
     }
-
-    .card{
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(15,19,34,.85), rgba(11,13,20,.92));
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:18px;
-      backdrop-filter: blur(8px);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .card:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(600px 260px at 15% 10%, rgba(121,255,225,.10), transparent 60%),
-                  radial-gradient(700px 260px at 85% 15%, rgba(180,140,255,.10), transparent 55%);
-      pointer-events:none;
-      opacity:.7;
-    }
-
-    .card > *{position:relative}
-
-    .h2{margin:0 0 10px; font-size:14px; letter-spacing:.4px; color:var(--muted); text-transform:uppercase}
-    .big{
-      margin:0 0 10px;
-      font-size:22px;
-      line-height:1.15;
-      letter-spacing:.2px;
-    }
-
-    .muted{color:var(--muted); font-size:14px; line-height:1.5}
-    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px}
-    .kpi{
-      padding:12px 12px;
-      border:1px solid rgba(32,38,74,.9);
-      border-radius: 16px;
-      background: rgba(5,6,10,.22);
-    }
-    .kpi .k{font-family:var(--mono); color:var(--muted); font-size:12px}
-    .kpi .v{margin-top:6px; font-size:14px; color:var(--txt)}
-    .kpi .v b{color:var(--neon1)}
-    .kpi .v em{color:var(--neon2); font-style:normal}
-
-    .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
-    .btn{
-      border:1px solid rgba(121,255,225,.35);
-      background: linear-gradient(180deg, rgba(121,255,225,.18), rgba(5,6,10,.22));
-      color: var(--txt);
-      padding:10px 12px;
-      border-radius: 14px;
-      font-family: var(--mono);
-      font-size: 12px;
-      cursor:pointer;
-      display:inline-flex; align-items:center; gap:8px;
-    }
-    .btn:hover{transform: translateY(-1px); box-shadow: 0 14px 40px rgba(0,0,0,.35)}
-    .btn.secondary{
-      border-color: rgba(180,140,255,.35);
-      background: linear-gradient(180deg, rgba(180,140,255,.16), rgba(5,6,10,.22));
-    }
-
-    .section{margin-top:16px; display:grid; grid-template-columns: 1fr; gap:16px}
-    table{
-      width:100%;
-      border-collapse: collapse;
-      font-family: var(--mono);
-      font-size: 12px;
-      overflow:hidden;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-    }
-    th, td{
-      padding:10px 10px;
-      border-bottom: 1px solid rgba(32,38,74,.65);
-      vertical-align: top;
-    }
-    th{
-      text-align:left;
-      color: var(--muted);
-      background: rgba(5,6,10,.25);
-      font-weight:600;
-    }
-    tr:last-child td{border-bottom:none}
-    .tag{
-      display:inline-block;
-      padding:3px 8px;
-      border-radius:999px;
-      border:1px solid rgba(32,38,74,.9);
-      background: rgba(5,6,10,.25);
-      color: var(--muted);
-    }
-    .hr{
-      height:1px;
-      background: linear-gradient(90deg, transparent, rgba(121,255,225,.35), rgba(180,140,255,.30), transparent);
-      margin: 14px 0;
-      border:0;
-    }
-
-    .desc{
-      max-height: 220px;
-      overflow:hidden;
-      position:relative;
-      border:1px solid rgba(32,38,74,.85);
-      border-radius:16px;
-      background: rgba(5,6,10,.20);
-      padding:14px;
-    }
-    .desc.expanded{max-height:none}
-    .fade{
-      position:absolute; left:0; right:0; bottom:0; height:80px;
-      background: linear-gradient(180deg, transparent, rgba(11,13,20,.95));
-      pointer-events:none;
-    }
-
-    .foot{
-      margin-top:18px;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-      opacity:.95;
-    }
-
     @media (max-width: 980px){
       .hero{grid-template-columns:1fr}
-      .pillrow{justify-content:flex-start}
-      .brand{min-width:unset}
+      .brand{min-width:auto}
     }
+    .card{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,0.22);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .card .inner{padding:18px 18px 16px}
+    .headline{
+      font-size:28px;line-height:1.1;margin:0 0 10px;
+      letter-spacing:0.2px;
+    }
+    .sub{
+      margin:0 0 14px;color:var(--mut);font-size:14px;line-height:1.45;
+      max-width:70ch;
+    }
+    .kpiRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .kpi{
+      flex: 1 1 160px;
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:16px;padding:12px 12px;
+      min-height:62px;
+    }
+    .kpi .label{font-size:11px;color:var(--mut);letter-spacing:0.2px}
+    .kpi .val{font-size:16px;margin-top:6px;font-family:var(--mono)}
+    .kpi .val strong{font-weight:700}
+    .tag{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:12px;color:var(--mut);
+      border:1px solid rgba(255,255,255,0.12);
+      padding:8px 10px;border-radius:999px;
+      background: rgba(255,255,255,0.04);
+    }
+    .tag b{color:var(--txt)}
+    .glowline{
+      height:2px;width:100%;
+      background: linear-gradient(90deg, rgba(0,243,255,0.0), rgba(0,243,255,0.8), rgba(255,0,255,0.8), rgba(0,243,255,0.0));
+      opacity:0.55;
+      filter: blur(0.2px);
+    }
+
+    /* Clock */
+    .clockWrap{display:grid;grid-template-rows:auto 1fr;gap:10px}
+    .clockTop{
+      display:flex;justify-content:space-between;align-items:center;gap:10px;
+      padding:16px 18px 0;
+    }
+    .clockTop .title{
+      font-size:13px;margin:0;color:var(--mut);letter-spacing:0.2px
+    }
+    .badge{
+      font-family:var(--mono);
+      font-size:11px;color:rgba(255,255,255,0.9);
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.25);
+      padding:8px 10px;border-radius:999px;
+      box-shadow: 0 0 0 1px rgba(0,243,255,0.08), 0 0 24px rgba(0,243,255,0.10);
+      white-space:nowrap;
+    }
+    .clock{
+      display:grid;place-items:center;
+      padding:10px 18px 16px;
+      min-height:360px;
+    }
+    .dial{
+      width:min(420px, 100%);
+      aspect-ratio:1/1;
+      border-radius:999px;
+      position:relative;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(0,243,255,0.15), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(255,0,255,0.12), transparent 58%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), rgba(0,0,0,0.0) 55%),
+        rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.12);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.40) inset,
+        0 0 60px rgba(0,243,255,0.10),
+        0 0 80px rgba(255,0,255,0.08);
+      overflow:hidden;
+    }
+    .dial:before{
+      content:"";
+      position:absolute;inset:-35%;
+      background: conic-gradient(from 0deg,
+        rgba(0,243,255,0.0),
+        rgba(0,243,255,0.55),
+        rgba(255,0,255,0.55),
+        rgba(57,255,20,0.45),
+        rgba(0,243,255,0.0));
+      animation: spin 10s linear infinite;
+      filter: blur(1px);
+      opacity:0.55;
+    }
+    .dial:after{
+      content:"";
+      position:absolute;inset:12%;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.22);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05) inset;
+    }
+    .hand{
+      position:absolute;left:50%;top:50%;
+      transform-origin: 50% calc(100% - 14px);
+      transform: translate(-50%,-50%) rotate(0deg);
+      width:6px;height:44%;
+      border-radius:999px;
+      z-index:3;
+      background: linear-gradient(180deg, rgba(0,243,255,0.0), rgba(0,243,255,0.9), rgba(0,243,255,0.15));
+      box-shadow: 0 0 18px rgba(0,243,255,0.35);
+    }
+    .hand.second{
+      width:2px;height:48%;
+      background: linear-gradient(180deg, rgba(255,0,255,0.0), rgba(255,0,255,0.95), rgba(255,0,255,0.20));
+      box-shadow: 0 0 18px rgba(255,0,255,0.35);
+    }
+    .hand.hour{
+      width:8px;height:34%;
+      background: linear-gradient(180deg, rgba(57,255,20,0.0), rgba(57,255,20,0.8), rgba(57,255,20,0.18));
+      box-shadow: 0 0 18px rgba(57,255,20,0.25);
+    }
+    .hub{
+      position:absolute;left:50%;top:50%;
+      transform: translate(-50%,-50%);
+      width:18px;height:18px;border-radius:50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9), rgba(255,255,255,0.15) 45%, rgba(0,0,0,0.9));
+      border:1px solid rgba(255,255,255,0.18);
+      z-index:5;
+      box-shadow: 0 0 22px rgba(0,243,255,0.18), 0 0 22px rgba(255,0,255,0.14);
+    }
+    .ringText{
+      position:absolute;inset:0;z-index:4;
+      display:grid;place-items:center;
+      pointer-events:none;
+      font-family:var(--mono);
+      color:rgba(233,238,251,0.85);
+      text-shadow: 0 0 18px rgba(0,243,255,0.08);
+    }
+    .ringText .big{
+      font-size:13px;letter-spacing:0.7px;
+      text-align:center;
+      transform: translateY(6px);
+      opacity:0.95;
+    }
+    .ringText .small{
+      margin-top:8px;
+      font-size:11px;color:rgba(170,180,214,0.85);
+      text-align:center;
+    }
+
+    .grid{
+      margin-top:18px;
+      display:grid;grid-template-columns: 1fr 1fr;gap:18px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
+    .sectionTitle{
+      margin:0 0 10px;
+      font-size:13px;color:var(--mut);letter-spacing:0.3px
+    }
+    .list{
+      display:grid;gap:10px;
+      padding:0;margin:0;list-style:none;
+    }
+    .item{
+      display:flex;gap:12px;align-items:flex-start;
+      padding:12px 12px;border-radius:16px;
+      background: rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.10);
+    }
+    .ico{
+      width:34px;height:34px;border-radius:12px;
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);
+      display:grid;place-items:center;
+      flex:0 0 auto;
+    }
+    .ico span{font-size:16px}
+    .item h3{margin:0;font-size:13px}
+    .item p{margin:4px 0 0;color:var(--mut);font-size:12px;line-height:1.45}
+    .item a{
+      color:var(--txt);
+      text-decoration:none;
+      border-bottom: 1px dashed rgba(255,255,255,0.25);
+    }
+    .item a:hover{border-bottom-color: rgba(0,243,255,0.7)}
+    .foot{
+      margin-top:18px;
+      padding:14px 16px;border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.22);
+      color:var(--mut);
+      font-size:12px;line-height:1.5;
+    }
+    .mono{font-family:var(--mono)}
+    .sep{opacity:0.5;margin:0 8px}
+
+    @keyframes spin{to{transform: rotate(360deg)}}
   </style>
+
+  <!-- JSON-LD: Nodo vivo + separación de DOIs -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "TCDS Hunter TRL-9 — Nodo Vivo (Reloj Causal)",
+    "description": "Nodo vivo TRL-9 del sistema TCDS Hunter: Soldier + Crawler + evidencia y baseline USGS. Separación explícita entre DOI canónico (corpus/IP) y DOI observacional (nodo vivo/operación).",
+    "programmingLanguage": "Python",
+    "runtimePlatform": "Google Colab / Linux",
+    "codeRepository": "https://github.com/<TU_USUARIO>/<TU_REPO>",
+    "license": "https://github.com/<TU_USUARIO>/<TU_REPO>/blob/main/LICENSE",
+    "author": {
+      "@type": "Person",
+      "name": "Genaro Carrasco Ozuna",
+      "identifier": "https://orcid.org/0009-0005-6358-9910"
+    },
+    "isBasedOn": [
+      {
+        "@type": "CreativeWork",
+        "name": "TCDS Canonical Corpus (IP / referencia legal)",
+        "identifier": "https://doi.org/10.5281/zenodo.17520491"
+      },
+      {
+        "@type": "Dataset",
+        "name": "Nodo Vivo / Observación Operativa (baseline + reportes)",
+        "identifier": "https://doi.org/10.5281/zenodo.17923458"
+      }
+    ],
+    "citation": [
+      "https://doi.org/10.5281/zenodo.17520491",
+      "https://doi.org/10.5281/zenodo.17923458"
+    ],
+    "keywords": [
+      "TCDS",
+      "Hunter",
+      "Causal Time",
+      "Entropy veto",
+      "E-Veto",
+      "Seismic monitoring",
+      "Space weather",
+      "Lunar tidal stress",
+      "TRL-9"
+    ]
+  }
+  </script>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="topbar">
+    <header class="topbar">
       <div class="brand">
-        <div class="logo" title="Reloj Causal (Σ)">
-          <img src="assets/causal.svg" alt="Reloj Causal" />
-        </div>
-        <div class="title">
-          <h1>TCDS Hunter — Landing Operativa</h1>
-          <div class="sub">Snapshot canónico: Zenodo · DOI <span id="doiShort"></span></div>
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <h1>TCDS Hunter TRL-9 · Nodo Vivo</h1>
+          <p class="mono">Reloj Causal · Soldier v17.8 · Crawler v2.6 (Lunar Aware)</p>
         </div>
       </div>
 
-      <div class="pillrow">
-        <div class="pill neon"><strong>TRL</strong> 9 · Operativo</div>
-        <div class="pill"><strong>Publicación</strong> <span id="pubDate"></span></div>
-        <div class="pill"><strong>Autor</strong> <span id="authorName"></span></div>
-        <div class="pill"><strong>ORCID</strong> <span id="orcid"></span></div>
-      </div>
-    </div>
+      <nav class="nav">
+        <a class="pill" href="#artefactos"><span class="dot cyan"></span>Artefactos</a>
+        <a class="pill" href="#dossier"><span class="dot mag"></span>Dossier</a>
+        <a class="pill" href="#usgs"><span class="dot yel"></span>USGS Baseline</a>
+        <a class="pill" href="#dois"><span class="dot green"></span>DOIs</a>
+      </nav>
+    </header>
 
-    <div class="hero">
+    <section class="hero">
+      <article class="card">
+        <div class="glowline"></div>
+        <div class="inner">
+          <div class="tag">
+            <span class="dot green"></span>
+            <b>TRL-9 Operativo</b>
+            <span class="sep">·</span>
+            <span>Continuidad en Drive + auditoría</span>
+          </div>
+
+          <h2 class="headline">Infraestructura de monitoreo con reloj causal y evidencia forense</h2>
+          <p class="sub">
+            Este nodo sirve para publicar de forma estática (y auditable) los componentes operativos del
+            sistema <span class="mono">Hunter</span>: el Soldier (detección y evidencia) y el Crawler (contexto, Zoom-Out y SITREP),
+            incluyendo baseline USGS y separación formal de fuentes vs inferencias.
+          </p>
+
+          <div class="kpiRow">
+            <div class="kpi">
+              <div class="label">Capa Q·Σ = φ</div>
+              <div class="val"><strong>Q</strong>=Detección <span class="sep">·</span> <strong>Σ</strong>=Locking <span class="sep">·</span> <strong>φ</strong>=Baseline</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Filtro de Honestidad (E-Veto)</div>
+              <div class="val"><strong>ΔH</strong> forzada <span class="sep">·</span> <strong>LI</strong> locking <span class="sep">·</span> reproducibilidad</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Dominios</div>
+              <div class="val">Sismos <span class="sep">·</span> Volcanes <span class="sep">·</span> Kp <span class="sep">·</span> Luna</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="card clockWrap">
+        <div class="clockTop">
+          <p class="title">Reloj Causal (tC) · animación local</p>
+          <div class="badge" id="badgeUTC">UTC: --:--:--</div>
+        </div>
+
+        <div class="clock">
+          <div class="dial" role="img" aria-label="Reloj Causal animado">
+            <div class="hand hour" id="h"></div>
+            <div class="hand" id="m"></div>
+            <div class="hand second" id="s"></div>
+            <div class="hub"></div>
+
+            <div class="ringText">
+              <div>
+                <div class="big mono" id="tC">tC = dΣ/dt · (engineered)</div>
+                <div class="small" id="stamp">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="grid" id="artefactos">
       <div class="card">
-        <div class="h2">Título canónico</div>
-        <h2 class="big" id="title"></h2>
-        <p class="muted" id="oneLiner"></p>
-
-        <div class="grid2">
-          <div class="kpi">
-            <div class="k">DOI (Zenodo)</div>
-            <div class="v"><a id="doiLink" href="#" target="_blank" rel="noopener"><b id="doi"></b></a></div>
-          </div>
-          <div class="kpi">
-            <div class="k">Tipo de recurso</div>
-            <div class="v"><em id="rtype"></em></div>
-          </div>
-          <div class="kpi">
-            <div class="k">Publisher</div>
-            <div class="v" id="publisher"></div>
-          </div>
-          <div class="kpi">
-            <div class="k">Record ID</div>
-            <div class="v" id="recid"></div>
-          </div>
-        </div>
-
-        <div class="actions">
-          <a class="btn" id="btnZenodo" target="_blank" rel="noopener">↗ Abrir en Zenodo</a>
-          <a class="btn secondary" id="btnApi" target="_blank" rel="noopener">↗ Abrir JSON (API)</a>
-          <button class="btn" id="toggleDesc">▾ Descripción (expandir)</button>
-        </div>
-
-        <hr class="hr" />
-
-        <div class="h2">Descripción (Zenodo)</div>
-        <div class="desc" id="descBox">
-          <div id="desc"></div>
-          <div class="fade"></div>
+        <div class="inner">
+          <h3 class="sectionTitle">Artefactos operativos (repo)</h3>
+          <ul class="list">
+            <li class="item">
+              <div class="ico"><span>🛰️</span></div>
+              <div>
+                <h3>Soldier v17.8 (Lunar Commander)</h3>
+                <p>
+                  Script principal de detección + evidencia (Drive) + email táctico.
+                  <br />
+                  Archivo: <a href="./hunter_soldier_v17.8.py">hunter_soldier_v17.8.py</a>
+                </p>
+              </div>
+            </li>
+            <li class="item">
+              <div class="ico"><span>🧠</span></div>
+              <div>
+                <h3>Crawler v2.6 (Lunar Aware)</h3>
+                <p>
+                  Ingesta del feed JSONL + Zoom-Out + SITREP PDF + email.
+                  <br />
+                  Archivo: <a href="./crawler_global_%CE%A3.py">crawler_global_Σ.py</a>
+                </p>
+              </div>
+            </li>
+            <li class="item">
+              <div class="ico"><span>🧾</span></div>
+              <div>
+                <h3>Licencia</h3>
+                <p>
+                  Debe declarar separación de DOIs (canónico vs nodo vivo).
+                  <br />
+                  Archivo: <a href="./LICENSE">LICENSE</a>
+                </p>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
 
+      <div class="card" id="dossier">
+        <div class="inner">
+          <h3 class="sectionTitle">Dossier / evidencia (PDF)</h3>
+          <ul class="list">
+            <li class="item">
+              <div class="ico"><span>📄</span></div>
+              <div>
+                <h3>Carta CENAPRED (borrador)</h3>
+                <p>Archivo: <a href="./Carta_CENAPRED.pdf">Carta_CENAPRED.pdf</a></p>
+              </div>
+            </li>
+            <li class="item">
+              <div class="ico"><span>📌</span></div>
+              <div>
+                <h3>Propuesta / Valoración</h3>
+                <p>Archivo (si lo incluyes aquí): <a href="./Propuesta_Valoracion_Hunter_v17.pdf">Propuesta_Valoracion_Hunter_v17.pdf</a></p>
+              </div>
+            </li>
+            <li class="item">
+              <div class="ico"><span>🧪</span></div>
+              <div>
+                <h3>Dossier forense (Japón, dic 2025)</h3>
+                <p>Archivo (si lo incluyes aquí): <a href="./Dossier_Forense_Jap%C3%B3n_Dec2025.pdf">Dossier_Forense_Japón_Dec2025.pdf</a></p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" id="usgs" style="margin-top:18px">
       <div class="card">
-        <div class="h2">Licencias y derechos</div>
-        <p class="muted">
-          Este registro incluye un marco de derechos dual: licencia de atribución para referencia/citación y licencia TCDS para despliegue/uso operativo.
-          La fuente canónica de derechos es el paquete incluido en el record.
-        </p>
-        <div id="rights"></div>
-
-        <hr class="hr" />
-
-        <div class="h2">Artefactos incluidos (Zenodo Files)</div>
-        <p class="muted">Lista de archivos publicados en el record: tamaños, checksums y enlaces directos.</p>
-        <div id="filesTable"></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="card">
-        <div class="h2">Cómo usar esta landing</div>
-        <p class="muted">
-          Esta página está diseñada como “pista de aterrizaje” para comité mixto (técnico + infraestructura + gobernanza + PI),
-          con evidencia auditable y enlaces directos a artefactos. No depende de servicios privados ni de relatos: depende de archivos verificables.
-        </p>
-
-        <div class="grid2">
-          <div class="kpi">
-            <div class="k">Ruta recomendada en repo</div>
-            <div class="v"><span class="tag">/</span> index.html <span class="tag">/assets</span> causal.svg</div>
-          </div>
-          <div class="kpi">
-            <div class="k">Snapshot reproducible</div>
-            <div class="v">Zenodo record congelado + scripts descargables</div>
-          </div>
-        </div>
-
-        <div class="foot">
-          © Genaro Carrasco Ozuna · ORCID 0009-0005-6358-9910 · Fuente canónica: Zenodo DOI 10.5281/zenodo.17923458
+        <div class="inner">
+          <h3 class="sectionTitle">USGS Baseline (snapshot + trazabilidad)</h3>
+          <ul class="list">
+            <li class="item">
+              <div class="ico"><span>🌍</span></div>
+              <div>
+                <h3>Snapshot 30 días (GeoJSON)</h3>
+                <p>
+                  Archivo: <a href="./docs/usgs/usgs_30d.geojson">docs/usgs/usgs_30d.geojson</a>
+                  <br />
+                  Metadatos: <a href="./docs/usgs/usgs_30d.geojson.meta.json">docs/usgs/usgs_30d.geojson.meta.json</a>
+                </p>
+              </div>
+            </li>
+            <li class="item">
+              <div class="ico"><span>🧷</span></div>
+              <div>
+                <h3>Documento de contexto (LaTeX/PDF)</h3>
+                <p>
+                  Fuente/uso legal y separación φ-driven vs Q-driven:
+                  <br />
+                  <a href="./docs/USGS_30d_Context_Report.pdf">docs/USGS_30d_Context_Report.pdf</a>
+                  <span class="sep">·</span>
+                  <a href="./docs/USGS_30d_Context_Report.tex">docs/USGS_30d_Context_Report.tex</a>
+                </p>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
+
+      <div class="card" id="dois">
+        <div class="inner">
+          <h3 class="sectionTitle">Separación formal de DOIs</h3>
+          <ul class="list">
+            <li class="item">
+              <div class="ico"><span>🏛️</span></div>
+              <div>
+                <h3>DOI Canónico (Corpus/IP)</h3>
+                <p class="mono">
+                  10.5281/zenodo.17520491
+                  <br />
+                  <a href="https://doi.org/10.5281/zenodo.17520491" target="_blank" rel="noreferrer">Abrir DOI</a>
+                </p>
+              </div>
+            </li>
+            <li class="item">
+              <div class="ico"><span>🟢</span></div>
+              <div>
+                <h3>DOI Nodo Vivo (Observación / despliegue)</h3>
+                <p class="mono">
+                  10.5281/zenodo.17923458
+                  <br />
+                  <a href="https://doi.org/10.5281/zenodo.17923458" target="_blank" rel="noreferrer">Abrir DOI</a>
+                </p>
+              </div>
+            </li>
+            <li class="item">
+              <div class="ico"><span>🧠</span></div>
+              <div>
+                <h3>Nota de coherencia</h3>
+                <p>
+                  La observación (USGS + feeds) es <b>φ-driven</b> (contexto).
+                  La detección y evidencia del Hunter es <b>Q-driven</b> (tC, LI, ΔH, E-Veto).
+                  Esta separación evita apofenia y mantiene auditoría reproducible.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div>
+        <span class="mono">Autor:</span> Genaro Carrasco Ozuna <span class="sep">·</span>
+        <span class="mono">ORCID:</span> 0009-0005-6358-9910 <span class="sep">·</span>
+        <span class="mono">Nodo:</span> publicación estática para evidencia y trazabilidad.
+      </div>
+      <div style="margin-top:8px">
+        Si este repo se publica como GitHub Pages, asegúrate de que las rutas coincidan con tu estructura
+        (<span class="mono">/</span> o <span class="mono">/docs</span>).
+      </div>
+    </footer>
   </div>
 
   <script>
-    // ========= Embedded Zenodo JSON (Record 17923458) =========
-    // Fuente: 17923458.json (API record)
-    const ZENODO = {
-      "id": 17923458,
-      "doi": "10.5281/zenodo.17923458",
-      "zenodo_url": "https://doi.org/10.5281/zenodo.17923458",
-      "created": "2025-12-13",
-      "updated": "2025-12-13",
-      "publication_date": "2025-12-13",
-      "title": "Demostración Operativa TRL-9 de un Sistema de Inteligencia Sís...de Señal, Clima Espacial y Estrés de Marea Lunar (TCDS–Hunter)",
-      "publisher": "Zenodo",
-      "resource_type": "Computational notebook",
-      "creator": {
-        "name": "Genaro Carrasco Ozuna",
-        "orcid": "0009-0005-6358-9910"
-      },
-      "rights": [
-        {
-          "title": "Creative Commons Attribution 4.0 International",
-          "id": "cc-by-4.0",
-          "url": "https://creativecommons.org/licenses/by/4.0/legalcode",
-          "note": "Atribución y reutilización con crédito."
-        },
-        {
-          "title": "LICENSE COMMERCIAL TCDS",
-          "url": "https://geozunac3536-jpg.github.io/TCDS-LICENCIAS/",
-          "note": "Marco de uso operativo/comercial del sistema TCDS."
-        }
-      ],
-      "files": [
-        {
-          "name": "LICENSE_TCDS.pdf",
-          "size": 110720,
-          "checksum": "md5:3e8a82bebe8cecbd1f84dec01b1c256a",
-          "mimetype": "application/pdf",
-          "download": "https://zenodo.org/api/records/17923458/files/LICENSE_TCDS.pdf/content"
-        },
-        {
-          "name": "RADAR_HD_ntid12048352.png",
-          "size": 185481,
-          "checksum": "md5:254bd2a172c1bb183b3c19cba3dfbaa2",
-          "mimetype": "image/png",
-          "download": "https://zenodo.org/api/records/17923458/files/RADAR_HD_ntid12048352.png/content"
-        },
-        {
-          "name": "Tcds_Hunter.pdf",
-          "size": 564029,
-          "checksum": "md5:c2ab0a406613193121403660737c94b1",
-          "mimetype": "application/pdf",
-          "download": "https://zenodo.org/api/records/17923458/files/Tcds_Hunter.pdf/content"
-        },
-        {
-          "name": "crawler_global_Σ.py",
-          "size": 14579,
-          "checksum": "md5:fee389d4b72ea8cbc5a7e4052a915920",
-          "mimetype": "text/x-python",
-          "download": "https://zenodo.org/api/records/17923458/files/crawler_global_%CE%A3.py/content"
-        },
-        {
-          "name": "hunter_soldier_v17.8_moon.py",
-          "size": 17370,
-          "checksum": "md5:f18c9127663f140bb2240340afdc5857",
-          "mimetype": "text/x-python",
-          "download": "https://zenodo.org/api/records/17923458/files/hunter_soldier_v17.8_moon.py/content"
-        }
-      ],
-      "description_html": null
-    };
+    // Reloj causal animado: aquí lo tratamos como reloj "de referencia" (tM),
+    // y el texto lo marca como "tC = dΣ/dt" para anclar semántica.
+    const $ = (id)=>document.getElementById(id);
 
-    // Si quieres incrustar la descripción HTML completa de Zenodo, pégala aquí (opcional)
-    // ZENODO.description_html = `...`;
+    function pad(n){return String(n).padStart(2,"0");}
 
-    // ========= Helpers =========
-    function fmtBytes(bytes){
-      if (!bytes && bytes !== 0) return "-";
-      const u = ["B","KB","MB","GB"];
-      let i=0, n=bytes;
-      while(n>=1024 && i<u.length-1){ n/=1024; i++; }
-      return `${n.toFixed(i===0?0:1)} ${u[i]}`;
+    function tick(){
+      const now = new Date();
+      const utcH = now.getUTCHours();
+      const utcM = now.getUTCMinutes();
+      const utcS = now.getUTCSeconds();
+      $("badgeUTC").textContent = `UTC: ${pad(utcH)}:${pad(utcM)}:${pad(utcS)}`;
+
+      // Manecillas
+      const sec = utcS;
+      const min = utcM + sec/60;
+      const hr  = (utcH % 12) + min/60;
+
+      const sDeg = sec * 6;        // 360/60
+      const mDeg = min * 6;
+      const hDeg = hr  * 30;       // 360/12
+
+      $("s").style.transform = `translate(-50%,-50%) rotate(${sDeg}deg)`;
+      $("m").style.transform = `translate(-50%,-50%) rotate(${mDeg}deg)`;
+      $("h").style.transform = `translate(-50%,-50%) rotate(${hDeg}deg)`;
+
+      // Sello textual (para lectura humana/IA)
+      $("stamp").textContent = `tM (UTC) = ${pad(utcH)}:${pad(utcM)}:${pad(utcS)} · Nodo vivo TRL-9`;
+      requestAnimationFrame(()=>{ /* deja respirar */ });
     }
 
-    // ========= Populate =========
-    document.getElementById("doi").textContent = ZENODO.doi;
-    document.getElementById("doiShort").textContent = ZENODO.doi;
-    document.getElementById("pubDate").textContent = ZENODO.publication_date || ZENODO.created;
-    document.getElementById("title").textContent = ZENODO.title;
-    document.getElementById("publisher").textContent = ZENODO.publisher || "—";
-    document.getElementById("rtype").textContent = ZENODO.resource_type || "—";
-    document.getElementById("recid").textContent = String(ZENODO.id);
-
-    document.getElementById("authorName").textContent = ZENODO.creator?.name || "—";
-    document.getElementById("orcid").textContent = ZENODO.creator?.orcid || "—";
-
-    const doiUrl = ZENODO.zenodo_url;
-    document.getElementById("doiLink").href = doiUrl;
-    document.getElementById("btnZenodo").href = doiUrl;
-    document.getElementById("btnApi").href = `https://zenodo.org/api/records/${ZENODO.id}`;
-
-    // One-liner (sobrio y institucional)
-    document.getElementById("oneLiner").textContent =
-      "Paquete canónico de evidencia operativa: scripts, radar HD y dossier técnico; listo para auditoría y despliegue soberano.";
-
-    // Description
-    const descEl = document.getElementById("desc");
-    if (ZENODO.description_html){
-      descEl.innerHTML = ZENODO.description_html;
-    } else {
-      descEl.innerHTML = `
-        <p class="muted" style="margin:0">
-          (Opcional) Puedes pegar aquí la descripción HTML completa del record Zenodo para que quede 100% incrustada en el landing.
-          La “pista” ya está completa por DOI + lista de artefactos verificables.
-        </p>
-      `;
-    }
-
-    // Rights
-    const rightsBox = document.getElementById("rights");
-    rightsBox.innerHTML = ZENODO.rights.map(r => `
-      <div class="kpi" style="margin-top:10px">
-        <div class="k">${r.id ? `ID: ${r.id}` : "Licencia"}</div>
-        <div class="v"><a href="${r.url}" target="_blank" rel="noopener"><b>${r.title}</b></a></div>
-        <div class="k" style="margin-top:8px">${r.note || ""}</div>
-      </div>
-    `).join("");
-
-    // Files table
-    const rows = ZENODO.files.map(f => `
-      <tr>
-        <td>
-          <div style="font-weight:600; color:var(--txt)">${f.name}</div>
-          <div style="color:var(--muted); margin-top:4px">${f.mimetype || "-"}</div>
-        </td>
-        <td>${fmtBytes(f.size)}</td>
-        <td>${f.checksum || "-"}</td>
-        <td><a href="${f.download}" target="_blank" rel="noopener">descargar</a></td>
-      </tr>
-    `).join("");
-
-    document.getElementById("filesTable").innerHTML = `
-      <table>
-        <thead>
-          <tr>
-            <th>Archivo</th>
-            <th>Tamaño</th>
-            <th>Checksum</th>
-            <th>Link</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    `;
-
-    // Toggle description
-    const descBox = document.getElementById("descBox");
-    const toggle = document.getElementById("toggleDesc");
-    toggle.addEventListener("click", () => {
-      const ex = descBox.classList.toggle("expanded");
-      toggle.textContent = ex ? "▴ Descripción (colapsar)" : "▾ Descripción (expandir)";
-    });
+    setInterval(tick, 250);
+    tick();
   </script>
 </body>
 </html>
