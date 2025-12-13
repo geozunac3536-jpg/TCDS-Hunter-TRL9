@@ -1,0 +1,19 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "@id": "https://doi.org/10.5281/zenodo.17923458",
+  "name": "TCDS Hunter TRL-9",
+  "version": "17.7",
+  "creator": {
+    "@type": "Person",
+    "name": "Genaro Carrasco Ozuna",
+    "identifier": "https://orcid.org/0009-0005-6358-9910"
+  },
+  "isBasedOn": {
+    "@id": "https://doi.org/10.5281/zenodo.17520491",
+    "@type": "CreativeWork"
+  },
+  "applicationCategory": "Geophysical Intelligence",
+  "operatingSystem": "Linux, Colab",
+  "license": "https://tcds.org/licenses/TCRL-1.0"
+}
