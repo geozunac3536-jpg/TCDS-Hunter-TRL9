@@ -1,0 +1,26 @@
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "@id": "https://doi.org/10.5281/zenodo.17923458#observation-note",
+  "name": "Observation Reframing Note — TCDS Hunter TRL-9",
+  "description": "This repository represents the operational and evidentiary layer (TRL-9) of the TCDS Hunter system. Observational discrepancies between this record and earlier canonical publications are intentional and arise from a layered governance architecture separating operational evidence from intellectual property canon.",
+  "about": [
+    {
+      "@type": "CreativeWork",
+      "@id": "https://doi.org/10.5281/zenodo.17923458",
+      "name": "Operational Evidence Package (TRL-9)"
+    },
+    {
+      "@type": "CreativeWork",
+      "@id": "https://doi.org/10.5281/zenodo.17520491",
+      "name": "Canonical Intellectual Property Ledger"
+    }
+  ],
+  "text": "For evaluators and reviewers: DOI 10.5281/zenodo.17923458 SHALL be used as the primary reference for operational validation, forensic analysis, and TRL-9 assessment. DOI 10.5281/zenodo.17520491 SHALL be used exclusively as the canonical record for authorship, ontology, and intellectual property. Divergences between both records do not represent inconsistency but a deliberate separation between evidence execution and paradigm canon.",
+  "license": "https://tcds.org/licenses/TCRL-1.0",
+  "creator": {
+    "@type": "Person",
+    "name": "Genaro Carrasco Ozuna",
+    "identifier": "https://orcid.org/0009-0005-6358-9910"
+  }
+}
