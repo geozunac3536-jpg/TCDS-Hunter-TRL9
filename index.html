@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#05060a" />
+  <title>TCDS Hunter — Landing Operativa (Zenodo DOI 10.5281/zenodo.17923458)</title>
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="TCDS Hunter — Demostración Operativa (TRL-9) — Zenodo 10.5281/zenodo.17923458" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="Landing operativa y dossier técnico: artefactos, scripts, radar HD y licenciamiento. Fuente canónica: Zenodo DOI 10.5281/zenodo.17923458" />
+
+  <style>
+    :root{
+      --bg:#05060a;
+      --panel:#0b0d14;
+      --panel2:#0f1322;
+      --txt:#e9ecff;
+      --muted:#aab1d6;
+      --line:#20264a;
+
+      --neon1:#79ffe1;
+      --neon2:#b48cff;
+      --warn:#ffd479;
+      --bad:#ff5a79;
+
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 20px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 700px at 20% 10%, rgba(180,140,255,.18), transparent 60%),
+                  radial-gradient(900px 600px at 85% 15%, rgba(121,255,225,.14), transparent 55%),
+                  radial-gradient(900px 900px at 50% 95%, rgba(255,212,121,.10), transparent 60%),
+                  var(--bg);
+      color:var(--txt);
+    }
+
+    a{color:var(--neon1); text-decoration:none}
+    a:hover{opacity:.9; text-decoration:underline}
+    .wrap{max-width:1100px; margin:0 auto; padding:28px 18px 60px}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:16px 18px; border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(15,19,34,.9), rgba(11,13,20,.92));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:14px;
+      min-width: 260px;
+    }
+
+    .logo{
+      width:46px; height:46px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(121,255,225,.35), rgba(180,140,255,.25));
+      border:1px solid rgba(121,255,225,.25);
+      display:grid; place-items:center;
+      box-shadow: 0 0 0 1px rgba(180,140,255,.08), 0 18px 40px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .logo img{width:44px; height:44px; opacity:.95}
+
+    .title{display:flex; flex-direction:column; gap:2px}
+    .title h1{font-size:16px; margin:0; letter-spacing:.3px}
+    .title .sub{font-size:12px; color:var(--muted)}
+
+    .pillrow{display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end}
+    .pill{
+      font-family:var(--mono);
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(5,6,10,.35);
+      color: var(--muted);
+    }
+    .pill strong{color:var(--txt); font-weight:600}
+    .pill.neon{
+      border-color: rgba(121,255,225,.35);
+      color: var(--txt);
+      box-shadow: 0 0 0 1px rgba(121,255,225,.08);
+    }
+
+    .hero{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:stretch;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15,19,34,.85), rgba(11,13,20,.92));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+      backdrop-filter: blur(8px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 260px at 15% 10%, rgba(121,255,225,.10), transparent 60%),
+                  radial-gradient(700px 260px at 85% 15%, rgba(180,140,255,.10), transparent 55%);
+      pointer-events:none;
+      opacity:.7;
+    }
+
+    .card > *{position:relative}
+
+    .h2{margin:0 0 10px; font-size:14px; letter-spacing:.4px; color:var(--muted); text-transform:uppercase}
+    .big{
+      margin:0 0 10px;
+      font-size:22px;
+      line-height:1.15;
+      letter-spacing:.2px;
+    }
+
+    .muted{color:var(--muted); font-size:14px; line-height:1.5}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px}
+    .kpi{
+      padding:12px 12px;
+      border:1px solid rgba(32,38,74,.9);
+      border-radius: 16px;
+      background: rgba(5,6,10,.22);
+    }
+    .kpi .k{font-family:var(--mono); color:var(--muted); font-size:12px}
+    .kpi .v{margin-top:6px; font-size:14px; color:var(--txt)}
+    .kpi .v b{color:var(--neon1)}
+    .kpi .v em{color:var(--neon2); font-style:normal}
+
+    .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+    .btn{
+      border:1px solid rgba(121,255,225,.35);
+      background: linear-gradient(180deg, rgba(121,255,225,.18), rgba(5,6,10,.22));
+      color: var(--txt);
+      padding:10px 12px;
+      border-radius: 14px;
+      font-family: var(--mono);
+      font-size: 12px;
+      cursor:pointer;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn:hover{transform: translateY(-1px); box-shadow: 0 14px 40px rgba(0,0,0,.35)}
+    .btn.secondary{
+      border-color: rgba(180,140,255,.35);
+      background: linear-gradient(180deg, rgba(180,140,255,.16), rgba(5,6,10,.22));
+    }
+
+    .section{margin-top:16px; display:grid; grid-template-columns: 1fr; gap:16px}
+    table{
+      width:100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 12px;
+      overflow:hidden;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+    }
+    th, td{
+      padding:10px 10px;
+      border-bottom: 1px solid rgba(32,38,74,.65);
+      vertical-align: top;
+    }
+    th{
+      text-align:left;
+      color: var(--muted);
+      background: rgba(5,6,10,.25);
+      font-weight:600;
+    }
+    tr:last-child td{border-bottom:none}
+    .tag{
+      display:inline-block;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid rgba(32,38,74,.9);
+      background: rgba(5,6,10,.25);
+      color: var(--muted);
+    }
+    .hr{
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(121,255,225,.35), rgba(180,140,255,.30), transparent);
+      margin: 14px 0;
+      border:0;
+    }
+
+    .desc{
+      max-height: 220px;
+      overflow:hidden;
+      position:relative;
+      border:1px solid rgba(32,38,74,.85);
+      border-radius:16px;
+      background: rgba(5,6,10,.20);
+      padding:14px;
+    }
+    .desc.expanded{max-height:none}
+    .fade{
+      position:absolute; left:0; right:0; bottom:0; height:80px;
+      background: linear-gradient(180deg, transparent, rgba(11,13,20,.95));
+      pointer-events:none;
+    }
+
+    .foot{
+      margin-top:18px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      opacity:.95;
+    }
+
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
+      .pillrow{justify-content:flex-start}
+      .brand{min-width:unset}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" title="Reloj Causal (Σ)">
+          <img src="assets/causal.svg" alt="Reloj Causal" />
+        </div>
+        <div class="title">
+          <h1>TCDS Hunter — Landing Operativa</h1>
+          <div class="sub">Snapshot canónico: Zenodo · DOI <span id="doiShort"></span></div>
+        </div>
+      </div>
+
+      <div class="pillrow">
+        <div class="pill neon"><strong>TRL</strong> 9 · Operativo</div>
+        <div class="pill"><strong>Publicación</strong> <span id="pubDate"></span></div>
+        <div class="pill"><strong>Autor</strong> <span id="authorName"></span></div>
+        <div class="pill"><strong>ORCID</strong> <span id="orcid"></span></div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="card">
+        <div class="h2">Título canónico</div>
+        <h2 class="big" id="title"></h2>
+        <p class="muted" id="oneLiner"></p>
+
+        <div class="grid2">
+          <div class="kpi">
+            <div class="k">DOI (Zenodo)</div>
+            <div class="v"><a id="doiLink" href="#" target="_blank" rel="noopener"><b id="doi"></b></a></div>
+          </div>
+          <div class="kpi">
+            <div class="k">Tipo de recurso</div>
+            <div class="v"><em id="rtype"></em></div>
+          </div>
+          <div class="kpi">
+            <div class="k">Publisher</div>
+            <div class="v" id="publisher"></div>
+          </div>
+          <div class="kpi">
+            <div class="k">Record ID</div>
+            <div class="v" id="recid"></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn" id="btnZenodo" target="_blank" rel="noopener">↗ Abrir en Zenodo</a>
+          <a class="btn secondary" id="btnApi" target="_blank" rel="noopener">↗ Abrir JSON (API)</a>
+          <button class="btn" id="toggleDesc">▾ Descripción (expandir)</button>
+        </div>
+
+        <hr class="hr" />
+
+        <div class="h2">Descripción (Zenodo)</div>
+        <div class="desc" id="descBox">
+          <div id="desc"></div>
+          <div class="fade"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="h2">Licencias y derechos</div>
+        <p class="muted">
+          Este registro incluye un marco de derechos dual: licencia de atribución para referencia/citación y licencia TCDS para despliegue/uso operativo.
+          La fuente canónica de derechos es el paquete incluido en el record.
+        </p>
+        <div id="rights"></div>
+
+        <hr class="hr" />
+
+        <div class="h2">Artefactos incluidos (Zenodo Files)</div>
+        <p class="muted">Lista de archivos publicados en el record: tamaños, checksums y enlaces directos.</p>
+        <div id="filesTable"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="card">
+        <div class="h2">Cómo usar esta landing</div>
+        <p class="muted">
+          Esta página está diseñada como “pista de aterrizaje” para comité mixto (técnico + infraestructura + gobernanza + PI),
+          con evidencia auditable y enlaces directos a artefactos. No depende de servicios privados ni de relatos: depende de archivos verificables.
+        </p>
+
+        <div class="grid2">
+          <div class="kpi">
+            <div class="k">Ruta recomendada en repo</div>
+            <div class="v"><span class="tag">/</span> index.html <span class="tag">/assets</span> causal.svg</div>
+          </div>
+          <div class="kpi">
+            <div class="k">Snapshot reproducible</div>
+            <div class="v">Zenodo record congelado + scripts descargables</div>
+          </div>
+        </div>
+
+        <div class="foot">
+          © Genaro Carrasco Ozuna · ORCID 0009-0005-6358-9910 · Fuente canónica: Zenodo DOI 10.5281/zenodo.17923458
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========= Embedded Zenodo JSON (Record 17923458) =========
+    // Fuente: 17923458.json (API record)
+    const ZENODO = {
+      "id": 17923458,
+      "doi": "10.5281/zenodo.17923458",
+      "zenodo_url": "https://doi.org/10.5281/zenodo.17923458",
+      "created": "2025-12-13",
+      "updated": "2025-12-13",
+      "publication_date": "2025-12-13",
+      "title": "Demostración Operativa TRL-9 de un Sistema de Inteligencia Sís...de Señal, Clima Espacial y Estrés de Marea Lunar (TCDS–Hunter)",
+      "publisher": "Zenodo",
+      "resource_type": "Computational notebook",
+      "creator": {
+        "name": "Genaro Carrasco Ozuna",
+        "orcid": "0009-0005-6358-9910"
+      },
+      "rights": [
+        {
+          "title": "Creative Commons Attribution 4.0 International",
+          "id": "cc-by-4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/legalcode",
+          "note": "Atribución y reutilización con crédito."
+        },
+        {
+          "title": "LICENSE COMMERCIAL TCDS",
+          "url": "https://geozunac3536-jpg.github.io/TCDS-LICENCIAS/",
+          "note": "Marco de uso operativo/comercial del sistema TCDS."
+        }
+      ],
+      "files": [
+        {
+          "name": "LICENSE_TCDS.pdf",
+          "size": 110720,
+          "checksum": "md5:3e8a82bebe8cecbd1f84dec01b1c256a",
+          "mimetype": "application/pdf",
+          "download": "https://zenodo.org/api/records/17923458/files/LICENSE_TCDS.pdf/content"
+        },
+        {
+          "name": "RADAR_HD_ntid12048352.png",
+          "size": 185481,
+          "checksum": "md5:254bd2a172c1bb183b3c19cba3dfbaa2",
+          "mimetype": "image/png",
+          "download": "https://zenodo.org/api/records/17923458/files/RADAR_HD_ntid12048352.png/content"
+        },
+        {
+          "name": "Tcds_Hunter.pdf",
+          "size": 564029,
+          "checksum": "md5:c2ab0a406613193121403660737c94b1",
+          "mimetype": "application/pdf",
+          "download": "https://zenodo.org/api/records/17923458/files/Tcds_Hunter.pdf/content"
+        },
+        {
+          "name": "crawler_global_Σ.py",
+          "size": 14579,
+          "checksum": "md5:fee389d4b72ea8cbc5a7e4052a915920",
+          "mimetype": "text/x-python",
+          "download": "https://zenodo.org/api/records/17923458/files/crawler_global_%CE%A3.py/content"
+        },
+        {
+          "name": "hunter_soldier_v17.8_moon.py",
+          "size": 17370,
+          "checksum": "md5:f18c9127663f140bb2240340afdc5857",
+          "mimetype": "text/x-python",
+          "download": "https://zenodo.org/api/records/17923458/files/hunter_soldier_v17.8_moon.py/content"
+        }
+      ],
+      "description_html": null
+    };
+
+    // Si quieres incrustar la descripción HTML completa de Zenodo, pégala aquí (opcional)
+    // ZENODO.description_html = `...`;
+
+    // ========= Helpers =========
+    function fmtBytes(bytes){
+      if (!bytes && bytes !== 0) return "-";
+      const u = ["B","KB","MB","GB"];
+      let i=0, n=bytes;
+      while(n>=1024 && i<u.length-1){ n/=1024; i++; }
+      return `${n.toFixed(i===0?0:1)} ${u[i]}`;
+    }
+
+    // ========= Populate =========
+    document.getElementById("doi").textContent = ZENODO.doi;
+    document.getElementById("doiShort").textContent = ZENODO.doi;
+    document.getElementById("pubDate").textContent = ZENODO.publication_date || ZENODO.created;
+    document.getElementById("title").textContent = ZENODO.title;
+    document.getElementById("publisher").textContent = ZENODO.publisher || "—";
+    document.getElementById("rtype").textContent = ZENODO.resource_type || "—";
+    document.getElementById("recid").textContent = String(ZENODO.id);
+
+    document.getElementById("authorName").textContent = ZENODO.creator?.name || "—";
+    document.getElementById("orcid").textContent = ZENODO.creator?.orcid || "—";
+
+    const doiUrl = ZENODO.zenodo_url;
+    document.getElementById("doiLink").href = doiUrl;
+    document.getElementById("btnZenodo").href = doiUrl;
+    document.getElementById("btnApi").href = `https://zenodo.org/api/records/${ZENODO.id}`;
+
+    // One-liner (sobrio y institucional)
+    document.getElementById("oneLiner").textContent =
+      "Paquete canónico de evidencia operativa: scripts, radar HD y dossier técnico; listo para auditoría y despliegue soberano.";
+
+    // Description
+    const descEl = document.getElementById("desc");
+    if (ZENODO.description_html){
+      descEl.innerHTML = ZENODO.description_html;
+    } else {
+      descEl.innerHTML = `
+        <p class="muted" style="margin:0">
+          (Opcional) Puedes pegar aquí la descripción HTML completa del record Zenodo para que quede 100% incrustada en el landing.
+          La “pista” ya está completa por DOI + lista de artefactos verificables.
+        </p>
+      `;
+    }
+
+    // Rights
+    const rightsBox = document.getElementById("rights");
+    rightsBox.innerHTML = ZENODO.rights.map(r => `
+      <div class="kpi" style="margin-top:10px">
+        <div class="k">${r.id ? `ID: ${r.id}` : "Licencia"}</div>
+        <div class="v"><a href="${r.url}" target="_blank" rel="noopener"><b>${r.title}</b></a></div>
+        <div class="k" style="margin-top:8px">${r.note || ""}</div>
+      </div>
+    `).join("");
+
+    // Files table
+    const rows = ZENODO.files.map(f => `
+      <tr>
+        <td>
+          <div style="font-weight:600; color:var(--txt)">${f.name}</div>
+          <div style="color:var(--muted); margin-top:4px">${f.mimetype || "-"}</div>
+        </td>
+        <td>${fmtBytes(f.size)}</td>
+        <td>${f.checksum || "-"}</td>
+        <td><a href="${f.download}" target="_blank" rel="noopener">descargar</a></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("filesTable").innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Archivo</th>
+            <th>Tamaño</th>
+            <th>Checksum</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+
+    // Toggle description
+    const descBox = document.getElementById("descBox");
+    const toggle = document.getElementById("toggleDesc");
+    toggle.addEventListener("click", () => {
+      const ex = descBox.classList.toggle("expanded");
+      toggle.textContent = ex ? "▴ Descripción (colapsar)" : "▾ Descripción (expandir)";
+    });
+  </script>
+</body>
+</html>
