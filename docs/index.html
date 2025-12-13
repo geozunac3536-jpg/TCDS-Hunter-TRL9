@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#05060a"/>
+  <title>TCDS Hunter — Reloj Causal (Σ) | TRL-9 Evidence</title>
+
+  <style>
+    :root{
+      --bg:#05060a;
+      --panel:#0b0d14;
+      --panel2:#0f1322;
+      --txt:#e9ecff;
+      --muted:#aab1d6;
+      --line:#20264a;
+      --neon1:#79ffe1;
+      --neon2:#b48cff;
+      --warn:#ffcc66;
+      --danger:#ff4d6d;
+      --shadow:0 18px 70px rgba(0,0,0,.55);
+      --radius:22px;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--txt); font-family:var(--sans);
+      background:
+        radial-gradient(1200px 700px at 18% 12%, rgba(180,140,255,.18), transparent 58%),
+        radial-gradient(900px 600px at 82% 10%, rgba(121,255,225,.14), transparent 55%),
+        radial-gradient(900px 600px at 55% 90%, rgba(255,77,109,.08), transparent 55%),
+        var(--bg);
+    }
+    a{color:var(--neon1); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px; margin:0 auto; padding:28px 18px 70px}
+    .card{
+      border:1px solid rgba(32,38,74,.9);
+      background:linear-gradient(180deg, rgba(15,19,34,.86), rgba(11,13,20,.94));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+      backdrop-filter:blur(9px);
+    }
+    .top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; flex-wrap:wrap;
+    }
+    .brand{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+    .logo{
+      width:62px; height:62px; border-radius:18px;
+      background:linear-gradient(135deg, rgba(121,255,225,.30), rgba(180,140,255,.25));
+      border:1px solid rgba(121,255,225,.28);
+      box-shadow:0 0 0 1px rgba(180,140,255,.12) inset;
+      display:grid; place-items:center;
+    }
+    .logo span{
+      font-family:var(--mono);
+      font-weight:700;
+      color:var(--txt);
+      opacity:.92;
+      letter-spacing:.6px;
+    }
+    h1{margin:0; font-size:18px}
+    .sub{color:var(--muted); font-family:var(--mono); font-size:12px; line-height:1.45}
+    .pill{
+      font-family:var(--mono); font-size:12px; color:var(--muted);
+      border:1px solid rgba(32,38,74,.9);
+      padding:6px 10px; border-radius:999px;
+      background:rgba(5,6,10,.35);
+    }
+    .grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; margin-top:14px}
+    @media(max-width:920px){ .grid{grid-template-columns:1fr} }
+
+    .clockPanel{
+      border:1px solid rgba(32,38,74,.9);
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(5,6,10,.22), rgba(15,19,34,.30));
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+      min-height:420px;
+    }
+    .clockPanel::before{
+      content:"";
+      position:absolute; inset:-80px;
+      background:
+        radial-gradient(380px 260px at 25% 20%, rgba(121,255,225,.20), transparent 60%),
+        radial-gradient(420px 320px at 80% 18%, rgba(180,140,255,.18), transparent 60%),
+        radial-gradient(340px 260px at 55% 90%, rgba(255,77,109,.10), transparent 60%);
+      filter:blur(16px);
+      pointer-events:none;
+    }
+
+    .clockStage{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+    .clockFrame{
+      border:1px solid rgba(121,255,225,.20);
+      border-radius:18px;
+      background:rgba(5,6,10,.38);
+      box-shadow:0 0 0 1px rgba(180,140,255,.10) inset;
+      padding:12px;
+    }
+
+    /* --- SVG clock container --- */
+    .svgWrap{
+      width:100%;
+      aspect-ratio: 1 / 1;
+      display:grid;
+      place-items:center;
+      position:relative;
+    }
+    .svgWrap svg{
+      width:min(520px, 100%);
+      height:auto;
+      display:block;
+      filter: drop-shadow(0 0 18px rgba(121,255,225,.18))
+              drop-shadow(0 0 18px rgba(180,140,255,.12));
+    }
+
+    /* --- Animated overlays (hands + pulse) --- */
+    .handsLayer{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      pointer-events:none;
+    }
+    .hands{
+      width:min(520px, 100%);
+      height:auto;
+      aspect-ratio:1/1;
+      position:relative;
+    }
+    .hand{
+      position:absolute;
+      left:50%; top:50%;
+      transform-origin: 0% 50%;
+      transform: translateY(-50%) rotate(0deg);
+      border-radius:999px;
+    }
+    .hand.sec{
+      width:42%;
+      height:4px;
+      background:linear-gradient(90deg, rgba(121,255,225,0), rgba(121,255,225,.95));
+      box-shadow:0 0 18px rgba(121,255,225,.38);
+    }
+    .hand.min{
+      width:36%;
+      height:6px;
+      background:linear-gradient(90deg, rgba(180,140,255,0), rgba(180,140,255,.92));
+      box-shadow:0 0 18px rgba(180,140,255,.30);
+      opacity:.95;
+    }
+    .hand.hour{
+      width:26%;
+      height:7px;
+      background:linear-gradient(90deg, rgba(255,77,109,0), rgba(255,77,109,.85));
+      box-shadow:0 0 18px rgba(255,77,109,.22);
+      opacity:.9;
+    }
+    .hub{
+      position:absolute;
+      left:50%; top:50%;
+      width:14px; height:14px;
+      transform: translate(-50%,-50%);
+      border-radius:999px;
+      background:rgba(233,236,255,.92);
+      box-shadow:
+        0 0 0 2px rgba(5,6,10,.75),
+        0 0 20px rgba(121,255,225,.22),
+        0 0 26px rgba(180,140,255,.18);
+    }
+
+    .pulse{
+      position:absolute;
+      left:50%; top:50%;
+      width:60%;
+      height:60%;
+      transform: translate(-50%,-50%);
+      border-radius:999px;
+      border:1px solid rgba(121,255,225,.26);
+      box-shadow:0 0 24px rgba(121,255,225,.14);
+      animation: pulse 2.2s ease-in-out infinite;
+      opacity:.75;
+    }
+    @keyframes pulse{
+      0%{transform:translate(-50%,-50%) scale(.94); opacity:.35}
+      50%{transform:translate(-50%,-50%) scale(1.02); opacity:.65}
+      100%{transform:translate(-50%,-50%) scale(.94); opacity:.35}
+    }
+
+    .readouts{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media(max-width:560px){ .readouts{grid-template-columns:1fr} }
+
+    .kpi{
+      border:1px solid rgba(32,38,74,.9);
+      border-radius:16px;
+      background:rgba(5,6,10,.22);
+      padding:12px;
+    }
+    .k{color:var(--muted); font-family:var(--mono); font-size:12px}
+    .v{margin-top:6px; font-family:var(--mono); font-size:14px; letter-spacing:.2px}
+    .v strong{color:var(--txt)}
+    .row{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid rgba(121,255,225,.30);
+      background:linear-gradient(180deg, rgba(121,255,225,.16), rgba(5,6,10,.24));
+      padding:10px 12px; border-radius:14px;
+      font-family:var(--mono); font-size:12px;
+    }
+    .btn.alt{
+      border-color: rgba(180,140,255,.30);
+      background:linear-gradient(180deg, rgba(180,140,255,.14), rgba(5,6,10,.24));
+    }
+    .btn.warn{
+      border-color: rgba(255,204,102,.32);
+      background:linear-gradient(180deg, rgba(255,204,102,.10), rgba(5,6,10,.24));
+      color: var(--txt);
+    }
+
+    details{
+      margin-top:12px;
+      border:1px solid rgba(32,38,74,.9);
+      border-radius:16px;
+      background:rgba(5,6,10,.20);
+      overflow:hidden;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      padding:12px 12px;
+      font-family:var(--mono);
+      color:var(--muted);
+      user-select:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    .note{padding:0 12px 12px; color:var(--muted); line-height:1.55; font-size:13px}
+    .note b{color:var(--txt)}
+    .foot{
+      margin-top:12px;
+      color:var(--muted);
+      font-family:var(--mono);
+      font-size:12px;
+      opacity:.88;
+    }
+    .tag{
+      font-family:var(--mono);
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(32,38,74,.9);
+      background:rgba(5,6,10,.25);
+      color:var(--muted);
+    }
+    .tag.ok{border-color:rgba(121,255,225,.26)}
+    .tag.ip{border-color:rgba(180,140,255,.26)}
+    .tag.evd{border-color:rgba(255,204,102,.26)}
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="card">
+    <div class="top">
+      <div class="brand">
+        <div class="logo"><span>Σ</span></div>
+        <div>
+          <h1>TCDS Hunter — Reloj Causal (Σ)</h1>
+          <div class="sub">
+            Evidence (TRL-9): <b>10.5281/zenodo.17923458</b> · Canon (IP Ledger): <b>10.5281/zenodo.17520491</b><br/>
+            Genaro Carrasco Ozuna · ORCID 0009-0005-6358-9910
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap">
+        <span class="pill">Σ-Engine</span>
+        <span class="pill">E-Veto</span>
+        <span class="pill">Audit-Ready</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: clock -->
+      <div class="clockPanel">
+        <div class="clockStage">
+
+          <div class="clockFrame">
+            <div class="svgWrap" id="svgWrap">
+              <!-- 🔧 CAMBIA EL NOMBRE DEL SVG AQUÍ si tu archivo no se llama causal_clock.svg -->
+              <object id="clockSvgObj" data="causal_clock.svg" type="image/svg+xml" aria-label="Reloj Causal"></object>
+
+              <div class="handsLayer">
+                <div class="hands" aria-hidden="true">
+                  <div class="pulse"></div>
+                  <div class="hand hour" id="handHour"></div>
+                  <div class="hand min" id="handMin"></div>
+                  <div class="hand sec" id="handSec"></div>
+                  <div class="hub"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="readouts">
+            <div class="kpi">
+              <div class="k">tM (UTC estándar)</div>
+              <div class="v" id="tmUtc">—</div>
+            </div>
+            <div class="kpi">
+              <div class="k">tC (Causal) · dΣ/dt</div>
+              <div class="v"><strong id="tcCausal">—</strong> <span style="color:var(--muted)">Σ-gradient</span></div>
+            </div>
+          </div>
+
+          <div class="readouts">
+            <div class="kpi">
+              <div class="k">DOI Evidence (TRL-9)</div>
+              <div class="v"><a href="https://doi.org/10.5281/zenodo.17923458" target="_blank" rel="noopener">doi.org/10.5281/zenodo.17923458</a></div>
+            </div>
+            <div class="kpi">
+              <div class="k">DOI Canon (IP Ledger)</div>
+              <div class="v"><a href="https://doi.org/10.5281/zenodo.17520491" target="_blank" rel="noopener">doi.org/10.5281/zenodo.17520491</a></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <a class="btn" href="https://doi.org/10.5281/zenodo.17923458" target="_blank" rel="noopener">↗ Abrir Evidence TRL-9</a>
+            <a class="btn alt" href="https://doi.org/10.5281/zenodo.17520491" target="_blank" rel="noopener">↗ Abrir Canon IP</a>
+            <a class="btn warn" href="../README.md">↩ README</a>
+          </div>
+
+          <details>
+            <summary>For reviewers · Nota de lectura (17923458 vs 17520491)</summary>
+            <div class="note">
+              <div class="row" style="margin-top:0">
+                <span class="tag evd">Evidence = 17923458</span>
+                <span class="tag ip">Canon = 17520491</span>
+                <span class="tag ok">No inconsistency</span>
+              </div>
+              <p>
+                <b>10.5281/zenodo.17923458</b> debe usarse como referencia primaria para <b>validación TRL-9</b>,
+                evidencia forense y evaluación operativa.  
+                <b>10.5281/zenodo.17520491</b> es el registro canónico para <b>autoría, ontología y propiedad intelectual</b>.
+              </p>
+              <p>
+                Cualquier divergencia entre ambos registros es <b>intencional</b> y proviene de la separación deliberada
+                entre <b>capa de ejecución/evidencia</b> y <b>capa canónica/IP-ledger</b>.  
+                Este diseño reduce fricción institucional (φ) y acelera decisiones de gobernanza.
+              </p>
+            </div>
+          </details>
+
+          <div class="foot">
+            Σ-clock animado (tM) + proxy tC (gradiente). Para tC real, conéctalo a tus métricas (LI, ΔH, κΣ) desde el feed del Soldier.
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: status pane -->
+      <div class="clockPanel" style="min-height:auto">
+        <div class="clockStage">
+
+          <div class="kpi">
+            <div class="k">Estado del nodo</div>
+            <div class="v"><strong>ONLINE</strong> · Landing estático + reloj causal</div>
+          </div>
+
+          <div class="kpi">
+            <div class="k">tM local (America/Mexico_City)</div>
+            <div class="v" id="tmLocal">—</div>
+          </div>
+
+          <div class="kpi">
+            <div class="k">Σ-telemetría (placeholder)</div>
+            <div class="v">
+              LI: <strong id="liVal">—</strong><br/>
+              ΔH: <strong id="dHVal">—</strong><br/>
+              κΣ: <strong id="kappaVal">—</strong>
+            </div>
+            <div class="sub" style="margin-top:8px">
+              (Aquí puedes inyectar valores desde `events_feed.jsonl` o un `status.json` publicado en `docs/`.)
+            </div>
+          </div>
+
+          <div class="kpi">
+            <div class="k">TCDS Balance</div>
+            <div class="v">
+              Q·Σ = φ<br/>
+              <span class="sub">Este landing está diseñado para reducir φ por auditoría: consistencia de DOIs, lectura institucional, evidencia accesible.</span>
+            </div>
+          </div>
+
+          <details open>
+            <summary>Integración rápida (opcional)</summary>
+            <div class="note">
+              Si quieres que el reloj muestre tC real (no proxy), publica un archivo en <code>docs/status.json</code> con:
+              <br/><code>{"LI":0.93,"dH":-0.41,"kappa":0.12,"tC":"2025-12-13T02:31:07Z"}</code>
+              <br/>y lo leo aquí con <code>fetch</code>.
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // --- Helpers ---
+  const pad = (n)=> String(n).padStart(2,'0');
+  const fmtUTC = (d)=> `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())} UTC`;
+
+  // Mexico City display (without relying on environment TZ)
+  const fmtMX = (d)=>{
+    try{
+      return new Intl.DateTimeFormat('es-MX', {
+        timeZone: 'America/Mexico_City',
+        year:'numeric', month:'2-digit', day:'2-digit',
+        hour:'2-digit', minute:'2-digit', second:'2-digit',
+        hour12:false
+      }).format(d);
+    }catch(e){
+      return d.toLocaleString();
+    }
+  };
+
+  // --- Clock animation ---
+  const handS = document.getElementById('handSec');
+  const handM = document.getElementById('handMin');
+  const handH = document.getElementById('handHour');
+
+  const elUTC = document.getElementById('tmUtc');
+  const elMX  = document.getElementById('tmLocal');
+  const elTC  = document.getElementById('tcCausal');
+
+  // Telemetry placeholders (hook later)
+  const elLI = document.getElementById('liVal');
+  const elDH = document.getElementById('dHVal');
+  const elK  = document.getElementById('kappaVal');
+
+  // Proxy tC: derived from instantaneous "coherence gradient" feel.
+  // (Replace with actual dΣ/dt from your pipeline when you publish status.json)
+  function tcProxy(d){
+    // A deterministic, smooth "gradient" using UTC milliseconds:
+    const t = d.getTime()/1000;
+    const g = Math.sin(t/13.0)*0.55 + Math.cos(t/29.0)*0.35; // [-0.9..0.9] approx
+    const tc = (g*100).toFixed(1);
+    const sign = (g>=0?"+":"");
+    return `${sign}${tc}`;
+  }
+
+  function setHand(handEl, deg){
+    // translateY(-50%) keeps hand centered on y; rotate sets angle.
+    handEl.style.transform = `translateY(-50%) rotate(${deg}deg)`;
+  }
+
+  function tick(){
+    const now = new Date();
+
+    // Readouts
+    elUTC.textContent = fmtUTC(now);
+    elMX.textContent  = fmtMX(now);
+    elTC.textContent  = tcProxy(now);
+
+    // Hands: use UTC time as reference (tM)
+    const s = now.getUTCSeconds() + now.getUTCMilliseconds()/1000;
+    const m = now.getUTCMinutes() + s/60;
+    const h = (now.getUTCHours()%12) + m/60;
+
+    // Degrees: 0 deg points right (because transform-origin at left center).
+    // Shift -90 so 12 o'clock is up.
+    const secDeg = (s * 6) - 90;      // 360/60 = 6
+    const minDeg = (m * 6) - 90;
+    const hourDeg = (h * 30) - 90;    // 360/12 = 30
+
+    setHand(handS, secDeg);
+    setHand(handM, minDeg);
+    setHand(handH, hourDeg);
+
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // --- Optional: load real Σ-telemetry from docs/status.json if present ---
+  async function loadStatus(){
+    try{
+      const res = await fetch('status.json', {cache:'no-store'});
+      if(!res.ok) return;
+      const j = await res.json();
+
+      if(typeof j.LI !== 'undefined') elLI.textContent = Number(j.LI).toFixed(3);
+      if(typeof j.dH !== 'undefined') elDH.textContent = Number(j.dH).toFixed(3);
+      if(typeof j.kappa !== 'undefined') elK.textContent = Number(j.kappa).toFixed(3);
+
+      if(typeof j.tC === 'string' && j.tC.trim()){
+        // If you publish real tC, show it in place of proxy as "tC@"
+        elTC.textContent = `tC@ ${j.tC}`;
+      }
+    }catch(e){ /* silent */ }
+  }
+  // Poll lightly
+  loadStatus();
+  setInterval(loadStatus, 8000);
+</script>
+
+</body>
+</html>
