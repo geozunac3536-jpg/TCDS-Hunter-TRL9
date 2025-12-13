@@ -1,78 +1,141 @@
-TCDS Hunter/Crawler — TRL-9 Evidence Package
-Copyright (c) 2025
+TCDS Research & Operational License (TCRL-1.0)
+
+with Explicit DOI Separation Clause
+
+
+---
+
+1. Scope of this Repository
+
+This repository constitutes the Operational Evidence Layer of the
+TCDS Hunter System, corresponding to a validated Technology Readiness Level 9 (TRL-9) deployment.
+
+The primary purpose of this repository is to provide:
+
+auditable operational evidence,
+
+executable artifacts,
+
+forensic documentation,
+
+and deployment-ready system components.
+
+
+
+---
+
+2. Explicit DOI Separation and Governance Model
+
+This project is governed by a dual-DOI architecture, intentionally separating operational evidence from canonical intellectual property.
+
+2.1 Operational Evidence DOI (Primary Reference)
+
+DOI: 10.5281/zenodo.17923458
+
+This DOI SHALL be used as the exclusive reference for:
+
+TRL-9 validation and assessment,
+
+operational performance evaluation,
+
+forensic post-event analysis,
+
+procurement, deployment, or sovereign acquisition review,
+
+technical audits of executable behavior.
+
+
+This repository is the live operational node corresponding to that DOI.
+
+
+---
+
+2.2 Canonical Intellectual Property DOI (Canonical Reference)
+
+DOI: 10.5281/zenodo.17520491
+
+This DOI SHALL be used as the exclusive canonical reference for:
+
+authorship and attribution,
+
+paradigm definition and ontology,
+
+theoretical corpus of the TCDS framework,
+
+intellectual property claims and priority.
+
+
+The canonical DOI does not represent an operational deployment and SHALL NOT be used for TRL assessment.
+
+
+---
+
+2.3 Legal Interpretation of Differences
+
+Any differences in structure, metadata, scope, file contents, or versioning between:
+
+10.5281/zenodo.17923458 (operational evidence), and
+
+10.5281/zenodo.17520491 (canonical IP ledger)
+
+
+are intentional, non-erroneous, and legally valid, resulting from a deliberate layered governance architecture.
+
+Such differences:
+
+SHALL NOT be interpreted as inconsistency,
+
+SHALL NOT be interpreted as duplication or misrepresentation,
+
+SHALL NOT invalidate either record.
+
+
+This separation is designed to reduce institutional friction and enable independent evaluation of execution versus authorship.
+
+
+---
+
+3. License Grant
+
+Subject to the restrictions below, permission is granted to:
+
+inspect and audit the code and documentation,
+
+execute the software for evaluation or verification,
+
+reference results for technical or institutional assessment.
+
+
+
+---
+
+4. Restrictions
+
+Unless explicitly authorized in writing by the author:
+
+Commercial exploitation is prohibited.
+
+Derivative works that alter the paradigm or training AI models on the corpus are prohibited.
+
+Re-licensing under alternative terms is prohibited.
+
+
+This repository is not released under an open commercial license.
+
+
+---
+
+5. Citation and Attribution
+
+Any citation of:
+
+operational results → MUST reference 10.5281/zenodo.17923458
+
+intellectual authorship or paradigm → MUST reference 10.5281/zenodo.17520491
+
+
+Attribution SHALL be made to:
+
 Genaro Carrasco Ozuna
 ORCID: 0009-0005-6358-9910
-Email: geozunac3536@gmail.com
 
-Este repositorio forma parte del proyecto:
-"Teoría Cromodinámica Sincrónica (TCDS) / Motor Sincrónico de Luz (MSL)"
-
--------------------------------------------------------------------------------
-Licencia principal (uso académico y no comercial)
--------------------------------------------------------------------------------
-
-Salvo indicación explícita en archivos individuales, el contenido de este
-repositorio (código, datos y documentación) se publica bajo:
-
-  Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-  (CC BY-NC-SA 4.0)
-
-Resumen (no sustituto de la licencia completa):
-
-- Puedes usar, copiar y adaptar el contenido para fines académicos,
-  de investigación, personales o no comerciales, siempre y cuando:
-  - des el crédito explícito a:
-    "Genaro Carrasco Ozuna — Proyecto TCDS"
-  - mantengas la misma licencia (BY-NC-SA) en trabajos derivados.
-- NO puedes utilizar este software, sus datos o derivados para
-  fines comerciales, explotación industrial o servicios de pago
-  sin un acuerdo de licencia específico con el autor.
-
-Texto completo de la licencia:
-https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
-
--------------------------------------------------------------------------------
-Licenciamiento profesional / uso comercial
--------------------------------------------------------------------------------
-
-Cualquier uso en:
-
-- infraestructuras críticas;
-- servicios de predicción, alerta temprana o modelado de riesgo
-  con fines de lucro;
-- integración en productos, plataformas o APIs comerciales;
-
-requiere una licencia comercial separada (**TCDS-Professional License**)
-negociada directamente con el autor.
-
-Contacto para licencias profesionales:
-
-  - Email:  geozunac3536@gmail.com
-  - WhatsApp técnico: +52 812 598 9868
-
--------------------------------------------------------------------------------
-Ausencia de garantías
--------------------------------------------------------------------------------
-
-Este software y los datos asociados se proporcionan "tal cual",
-sin garantía explícita ni implícita de:
-
-- exactitud,
-- completitud,
-- idoneidad para un propósito específico.
-
-El autor no se hace responsable de daños directos o indirectos
-derivados del uso de este paquete, incluyendo decisiones basadas
-en sus resultados en contextos operativos o de emergencia.
-
--------------------------------------------------------------------------------
-Trazabilidad y ética
--------------------------------------------------------------------------------
-
-Se recomienda firmemente:
-
-- registrar el uso institucional en el "TCDS Usage Registry — Hunter/Crawler",
-- mantener logs y auditorías claros,
-- y citar de forma adecuada el DOI asociado:
-
-  10.5281/zenodo.17885562
